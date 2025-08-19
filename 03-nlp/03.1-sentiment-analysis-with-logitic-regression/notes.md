@@ -55,9 +55,68 @@ The problem is : for large vocalubary array, we could get too much large trainin
 
 ![Problem with sparse representation](../images/problem-with-sparse-representation.png)
 
-# Negative & positive freq
+## Negative & positive freq
 
 We create a frequency directionnary, with PosFreq and NegFreq, which maps a word to a number of time that word shows up.
 Then, we can compare these 2 features. That's how we could measure positive & negative frequency.
 
 ![Word frequency](../images/word-frequency.png)
+
+## Feature extract with freq
+
+We previously learn how to encode a tweet as a vector of dimension V.
+We will learn how to encode a tweet as a vector of dimension 3.
+
+We surely have much more speed because instead of training on V features, we'll only have 3 features.
+
+Let's say that our dictionnary mapping is called "freqs".
+
+X = features
+m = tweet number m
+
+- The first feature is a bias unit : 1  
+- The second feature is a sum of every Positive Frequencies for every unique word on tweet m  
+- The third feature, is a sum of every Negative Frequencies for every unique word on tweet m  
+
+![Calculus](../images/feature-extraction-calculus.png)
+
+So for example, for our tweet, sum of Positive Frequency is 8, because we sum all PosFreq(1).
+
+![Positive Frequency calculus](../images/pos-freq-sum.png)
+
+And it's the same way for the third feature.
+That's computes give us a vector Xm = [1,8,11]
+
+![Features 3D vector](../images/features-3d-vector.png)
+
+# Preprocessing
+
+## Stop words, punctuation, handles & URLs
+
+We could now ask ourself what about stop words & punctuation, that are words with no meaning.  
+We most remove them. To keep the main subject of the corpus.
+
+![Stop words & punctuation removal](../images/stop-words-removing.png)
+
+It's the exact same way for URLs etc..
+![Handles & Urls removing](../images/handles-and-urls-removing.png)
+
+Key point : we have to adapt these rules to our context. Maybe our goal is to capt punctuation so we should not remove them, care to that.
+
+Here, we don't care about handles & urls for sentiment analysis.
+
+## Stemming & lowercasing
+
+Stemming in NLP : transforming any word to its spacetemp (= set of characters used to constuct the word and its derivative)
+
+Example : for the word tuning.
+tun with suffixe e = tune
+tun with suffixe ed = tuned
+tun with suffixe ing = tuning
+
+After processing stemming on corpus, 'tune', 'tuned' and 'tuning' words will be reduced to the term 'tun'.
+
+![Stemming](../images/stemming.png)
+
+So, our vocab would be significantly reduced if we perform this process to every words of the corpus.
+In addition, if we really want to loose no information, we have to lowercase every words. So, for example, the words 'GREAT', 'Great' & 'great' will be treated as the exact same word.
