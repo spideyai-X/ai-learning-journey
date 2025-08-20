@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis with Logistic Regression Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles/main.css">
+</head>
+<body>
+    <div class="container">
+        <p>My goal in this section is to build a sentiment analysis model using Logistic Regression. This model will classify tweets as either positive or negative.</p>
+
+        <h1>1. The Supervised Learning Framework</h1>
+        <p>The core idea is to train a model using labeled data. In our case, the features <code>X</code> are the tweets, and the labels <code>Y</code> are their sentiments (1 for positive, 0 for negative).</p>
+        <p>The training process is an iterative loop:</p>
+        <ol>
+            <li>Input features <code>X</code> into a prediction function.</li>
+            <li>The function, using its current parameters <code>θ</code>, generates a prediction <code>Ŷ</code>.</li>
+            <li>We calculate the <code>Cost</code>, which measures how far <code>Ŷ</code> is from the actual label <code>Y</code>.</li>
+            <li>We adjust the parameters <code>θ</code> (using an optimizer like Gradient Descent) to minimize this cost.</li>
+        </ol>
+        <img src="./images/supervised-ml-training.png" alt="Supervised ML Training">
+
+        <h1>2. Feature Extraction: From Text to Numbers</h1>
+        <p>A model can't understand raw text. We need to convert each tweet into a numerical vector.</p>
+
+        <h3>Method 1: Sparse Representation (Bag of Words)</h3>
+        <p>The most straightforward way is to create a feature vector for each tweet based on a vocabulary <code>V</code> (the set of all unique words across all tweets, our corpus).</p>
+        <p>For a single tweet, the feature vector <code>x</code> would have the size of <code>V</code>. Each element of <code>x</code> is 1 if the corresponding word from <code>V</code> is in the tweet, and 0 otherwise.</p>
+        <img src="./images/feature-extraction.png" alt="Feature extraction">
+        <p>This is called a <strong>sparse representation</strong> because for a large vocabulary, the vector will be mostly zeros.</p>
+        <p><strong>Problem</strong>: If <code>V</code> contains 10,000 words, our model needs to train on 10,001 parameters (<code>n+1</code>, where <code>n</code> is the size of <code>V</code> and <code>+1</code> is for the bias term). This can be computationally very expensive.</p>
+        <img src="./images/problem-with-sparse-representation.png" alt="Problem with sparse representation">
+
+        <h3>Method 2: Feature Engineering with Word Frequencies</h3>
+        <p>To avoid large vectors, we can engineer more meaningful features. Instead of a huge sparse vector, we can represent each tweet with a dense vector of only 3 features.</p>
+        <p>First, we pre-calculate a frequency map (<code>freqs</code>) for every word in our vocabulary <code>V</code>. This map stores how many times each word appears in positive tweets versus negative tweets.</p>
+        <img src="./images/word-frequency.png" alt="Word frequency">
+        <p>Now, for any given tweet <code>m</code>, we can build its feature vector <code>Xm</code> as follows:</p>
+        <ol>
+            <li><strong>Feature 1 (Bias Unit)</strong>: Always <code>1</code>.</li>
+            <li><strong>Feature 2 (Positive Score)</strong>: The sum of the positive frequencies for every unique word in the tweet.</li>
+            <li><strong>Feature 3 (Negative Score)</strong>: The sum of the negative frequencies for every unique word in the tweet.</li>
+        </ol>
+        <img src="./images/feature-extraction-calculus.png" alt="Calculus">
+        <p>This transforms a long, sparse vector into a very small, dense vector like <code>[1, 8, 11]</code>, which is much more efficient for training.</p>
+        <img src="./images/features-3d-vector.png" alt="Features 3D vector">
+
+        <h1>3. Text Preprocessing</h1>
+        <p>To get meaningful features, we must clean the raw text first. The goal is to reduce noise and standardize the words.</p>
+        <ol>
+            <li><strong>Remove Noise</strong>: Get rid of elements that don't carry sentiment, like Twitter handles (<code>@user</code>), URLs, and retweet markers (<code>RT</code>).</li>
+            <li><strong>Tokenize</strong>: Split the text into a list of individual words (tokens).</li>
+            <li><strong>Remove Stop Words and Punctuation</strong>: Filter out common words (<code>a</code>, <code>the</code>, <code>is</code>) and punctuation that don't add meaning. <em>Note: This step is context-dependent. For sentiment analysis, emoticons like <code>:)</code> are valuable and should be kept.</em></li>
+            <li><strong>Stemming</strong>: Reduce words to their root form (e.g., <code>learning</code>, <code>learned</code> -> <code>learn</code>). This helps group related words, reducing the vocabulary size.</li>
+            <li><strong>Lowercasing</strong>: Convert all text to lowercase to treat words like <code>Great</code> and <code>great</code> as the same token.</li>
+        </ol>
+        <p>After these steps, a raw tweet is transformed into a clean list of tokens, ready for feature extraction.</p>
+        <img src="./images/preprocessed-tweet.png" alt="Preprocessed tweet">
+
+        <h1>4. Building the Feature Matrix</h1>
+        <p>The final step is to apply this process to our entire corpus of tweets. Each tweet is converted into its 3-feature vector. These vectors are then stacked together to form a single matrix <code>X</code>.</p>
+        <p>Each row in the matrix <code>X</code> represents a tweet, and each column represents a feature. This matrix, along with the corresponding label vector <code>Y</code>, is what we'll use to train our logistic regression model.</p>
+        <img src="./images/multiple-datas-matrix.png" alt="Multiple datas
