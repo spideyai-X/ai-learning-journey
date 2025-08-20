@@ -32,7 +32,7 @@ Feel free to browse the different modules. If you want to run the code locally, 
 ## Connect with Me
 
 You can find me on the following platforms:
-- **X (Twitter)**: [@spideystreet](https://x.com/spideystreet)
+- **X**: [@spideystreet](https://x.com/spideystreet)
 - **LinkedIn**: [Hicham Djebali](https://www.linkedin.com/in/hicham-djebali/)
 
 ## License
