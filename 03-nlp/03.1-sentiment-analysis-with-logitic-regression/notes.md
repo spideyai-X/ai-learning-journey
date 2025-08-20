@@ -62,6 +62,7 @@ To get meaningful features, we must clean the raw text first. The goal is to red
 
 After these steps, a raw tweet is transformed into a clean list of tokens, ready for feature extraction.
 
+![Original tweet](./images/original-tweet.png)
 ![Preprocessed tweet](./images/preprocessed-tweet.png)
 
 # 4. Building the Feature Matrix
