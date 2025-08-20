@@ -21,6 +21,10 @@ This section will be updated as new modules are added.
   - [Notes](./03-nlp/03.1-sentiment-analysis-with-logitic-regression/notes.md)
   - [Notebooks](./03-nlp/03.1-sentiment-analysis-with-logitic-regression/notebooks/)
 
+## Versioning
+
+The version numbers for this repository will follow my progress through the learning modules. Each significant addition or completion of a topic will correspond to a new version, providing a clear timeline of my learning journey.
+
 ## How to Use This Repository
 
 Feel free to browse the different modules. If you want to run the code locally, you will need to have a Python environment set up with standard data science libraries such as [Requirements](./requirements.txt). Specific requirements for each module are usually listed at the beginning of the notebooks.
