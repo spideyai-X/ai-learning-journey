@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis with Logistic Regression Notes</title>
+
+    <link rel="stylesheet" href="./katex.min.css">
+
+    <script defer src="./katex.min.js"></script>
+    
+    <script defer src="./auto-render.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}
+                ]
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>1. The Supervised Learning Framework</h1>
+        <p>The core idea is to train a model using labeled data. In our case, the features $X$ are the tweets, and the labels $Y$ are their sentiments (1 for positive, 0 for negative).</p>
+        <p>The training process is an iterative loop:</p>
+        <ol>
+            <li>Input features $X$ into a prediction function.</li>
+            <li>The function, using its current parameters $\theta$, generates a prediction $\hat{Y}$.</li>
+            <li>We calculate the Cost, which measures how far $\hat{Y}$ is from the actual label $Y$.</li>
+            <li>We adjust the parameters $\theta$ (using an optimizer like Gradient Descent) to minimize this cost.</li>
+        </ol>
+        <img src="./images/supervised-ml-training.png" alt="Supervised ML Training">
+
+        <h1>2. Feature Extraction: From Text to Numbers</h1>
+        <h3>Method 1: Sparse Representation (Bag of Words)</h3>
+        <p>The feature vector $x$ for a tweet can be defined as:
+        $$x_i = \begin{cases} 1 & \text{if word } i \in \text{tweet} \\ 0 & \text{otherwise} \end{cases}$$
+        </p>
+
+        <h3>Method 2: Feature Engineering with Word Frequencies</h3>
+        <p>For any given tweet, we can build its feature vector $X_m$ as follows:</p>
+        <ol>
+            <li><strong>Feature 1 (Bias Unit)</strong>: Always <code>1</code>.</li>
+            <li><strong>Feature 2 (Positive Score)</strong>: The sum of the positive frequencies for every unique word in the tweet.</li>
+            <li><strong>Feature 3 (Negative Score)</strong>: The sum of the negative frequencies for every unique word in the tweet.</li>
+        </ol>
+        <img src="./images/feature-extraction-calculus.png" alt="Calculus">
+
+        <h1>4. Building the Feature Matrix</h1>
+        <p>Each row in the matrix $X$ represents a tweet, and each column represents a feature. This matrix, along with the corresponding label vector $Y$, is what we'll use to train our logistic regression model.</p>
+        <p>$$X = \begin{bmatrix} 1 & \text{pos}_1 & \text{neg}_1 \\ 1 & \text{pos}_2 & \text{neg}_2 \\ \vdots & \vdots & \vdots \\ 1 & \text{pos}_m & \text{neg}_m \end{bmatrix}, \quad Y = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_m \end{bmatrix}$$</p>
+    </div>
+</body>
+</html>
