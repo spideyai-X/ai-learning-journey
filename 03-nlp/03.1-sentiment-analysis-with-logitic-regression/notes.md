@@ -73,4 +73,55 @@ Each row in the matrix `X` represents a tweet, and each column represents a feat
 
 ![Multiple datas matrix](./images/multiple-datas-matrix.png)
 
+# 5. Logistic Regression for Classification
 
+After extracting features, the next step is to build a model that can classify a tweet as positive or negative. For this, we use Logistic Regression, a classification algorithm that predicts a probability.
+
+### The Hypothesis Function
+
+The core of logistic regression is the **hypothesis function**, denoted as $h(x)$, which estimates the probability that the output is 1. In our case, it's the probability of a tweet being positive.
+
+The hypothesis is defined using the **sigmoid function**, $g(z)$:
+$$ h(x) = g(\theta^T x) $$
+Where:
+- $\theta$ is the vector of model parameters (weights).
+- $x$ is the feature vector.
+- $\theta^T x$ is the dot product of the parameters and features.
+
+The sigmoid function is defined as:
+$$ g(z) = \frac{1}{1 + e^{-z}} $$
+This function always outputs a value between 0 and 1, which is perfect for representing a probability.
+
+![Sigmoid function plot](./images/sigmoid-function-plot.png)
+
+### The Decision Boundary
+
+To make a final classification (0 or 1), we need a threshold. By convention, we use 0.5:
+- If $h(x) \ge 0.5$, we predict **positive sentiment** (Y=1).
+- If $h(x) < 0.5$, we predict **negative sentiment** (Y=0).
+
+Looking at the sigmoid plot, $g(z) \ge 0.5$ when its input $z \ge 0$. Since our input is $z = \theta^T x$, this means:
+$$ \theta^T x \ge 0 \implies \text{Predict Positive} $$
+$$ \theta^T x < 0 \implies \text{Predict Negative} $$
+
+The line defined by $\theta^T x = 0$ is called the **decision boundary**. It's the line that separates the two predicted classes.
+
+### Training the Model
+
+The goal of training is to find the optimal parameters $\theta$ that minimize the difference between our predictions ($\hat{Y}$) and the actual labels ($Y$). This is achieved by minimizing a **cost function** using an optimization algorithm like Gradient Descent.
+
+![Overview of Logistic Regression](./images/logistic-regression-overview.png)
+
+### Example Walkthrough
+
+Let's assume we have already trained our model and found the optimal parameters $\theta$. Now, we can predict the sentiment of a new tweet.
+
+1.  **Preprocessing**: The raw tweet is cleaned (lowercased, tokenized, stopwords removed, stemmed).
+2.  **Feature Extraction**: We create the feature vector $x$ using the word frequency method.
+3.  **Prediction**: We compute the dot product $\theta^T x$ and apply the sigmoid function to get the probability.
+
+![Process to sentiment](./images/process-to-sentiment.png)
+
+In this example, the dot product $\theta^T x$ is 4.92.
+$$ h(x) = g(4.92) = \frac{1}{1 + e^{-4.92}} \approx 0.993 $$
+Since $0.993 \ge 0.5$, the model correctly predicts a **positive sentiment**.

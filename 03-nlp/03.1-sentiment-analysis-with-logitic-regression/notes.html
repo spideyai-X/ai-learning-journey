@@ -63,4 +63,71 @@
             <li><strong>Feature 3 (Negative Score)</strong>: The sum of the negative frequencies for every unique word in the tweet.</li>
         </ol>
         <img src="./images/feature-extraction-calculus.png" alt="Calculus">
-        <p>This transforms a long, sparse vector into a very small, dense vector like $[1, 8, 11]$, which is much more efficient for
+        <p>This transforms a long, sparse vector into a very small, dense vector like `[1, 8, 11]`, which is much more efficient for training.</p>
+        <img src="./images/features-3d-vector.png" alt="Features 3D vector">
+
+        <h1>3. Text Preprocessing</h1>
+        <p>To get meaningful features, we must clean the raw text first. The goal is to reduce noise and standardize the words.</p>
+        <ol>
+            <li><strong>Remove Noise</strong>: Get rid of elements that don't carry sentiment, like Twitter handles (<code>@user</code>), URLs, and retweet markers (<code>RT</code>).</li>
+            <li><strong>Tokenize</strong>: Split the text into a list of individual words (tokens).</li>
+            <li><strong>Remove Stop Words and Punctuation</strong>: Filter out common words (<code>a</code>, <code>the</code>, <code>is</code>) and punctuation that don't add meaning. <em>Note: This step is context-dependent. For sentiment analysis, emoticons like <code>:)</code> are valuable and should be kept.</em></li>
+            <li><strong>Stemming</strong>: Reduce words to their root form (e.g., <code>learning</code>, <code>learned</code> -> <code>learn</code>). This helps group related words, reducing the vocabulary size.</li>
+            <li><strong>Lowercasing</strong>: Convert all text to lowercase to treat words like <code>Great</code> and <code>great</code> as the same token.</li>
+        </ol>
+        <p>After these steps, a raw tweet is transformed into a clean list of tokens, ready for feature extraction.</p>
+        <img src="./images/original-tweet.png" alt="Original tweet">
+        <img src="./images/preprocessed-tweet.png" alt="Preprocessed tweet">
+
+        <h1>4. Building the Feature Matrix</h1>
+        <p>The final step is to apply this process to our entire corpus of tweets. Each tweet is converted into its 3-feature vector. These vectors are then stacked together to form a single matrix <code>X</code>.</p>
+        <p>Each row in the matrix <code>X</code> represents a tweet, and each column represents a feature. This matrix, along with the corresponding label vector <code>Y</code>, is what we'll use to train our logistic regression model.</p>
+        <img src="./images/multiple-datas-matrix.png" alt="Multiple datas matrix">
+
+        <h1>5. Logistic Regression for Classification</h1>
+        <p>After extracting features, the next step is to build a model that can classify a tweet as positive or negative. For this, we use Logistic Regression, a classification algorithm that predicts a probability.</p>
+
+        <h3>The Hypothesis Function</h3>
+        <p>The core of logistic regression is the <strong>hypothesis function</strong>, denoted as $h(x)$, which estimates the probability that the output is 1. In our case, it's the probability of a tweet being positive.</p>
+        <p>The hypothesis is defined using the <strong>sigmoid function</strong>, $g(z)$:</p>
+        $$ h(x) = g(\theta^T x) $$
+        <p>Where:</p>
+        <ul>
+            <li>$\theta$ is the vector of model parameters (weights).</li>
+            <li>$x$ is the feature vector.</li>
+            <li>$\theta^T x$ is the dot product of the parameters and features.</li>
+        </ul>
+        <p>The sigmoid function is defined as:</p>
+        $$ g(z) = \frac{1}{1 + e^{-z}} $$
+        <p>This function always outputs a value between 0 and 1, which is perfect for representing a probability.</p>
+        <img src="./images/sigmoid-function-plot.png" alt="Sigmoid function plot">
+
+        <h3>The Decision Boundary</h3>
+        <p>To make a final classification (0 or 1), we need a threshold. By convention, we use 0.5:</p>
+        <ul>
+            <li>If $h(x) \ge 0.5$, we predict <strong>positive sentiment</strong> (Y=1).</li>
+            <li>If $h(x) < 0.5$, we predict <strong>negative sentiment</strong> (Y=0).</li>
+        </ul>
+        <p>Looking at the sigmoid plot, $g(z) \ge 0.5$ when its input $z \ge 0$. Since our input is $z = \theta^T x$, this means:</p>
+        $$ \theta^T x \ge 0 \implies \text{Predict Positive} $$
+        $$ \theta^T x < 0 \implies \text{Predict Negative} $$
+        <p>The line defined by $\theta^T x = 0$ is called the <strong>decision boundary</strong>. It's the line that separates the two predicted classes.</p>
+
+        <h3>Training the Model</h3>
+        <p>The goal of training is to find the optimal parameters $\theta$ that minimize the difference between our predictions ($\hat{Y}$) and the actual labels ($Y$). This is achieved by minimizing a <strong>cost function</strong> using an optimization algorithm like Gradient Descent.</p>
+        <img src="./images/logistic-regression-overview.png" alt="Overview of Logistic Regression">
+
+        <h3>Example Walkthrough</h3>
+        <p>Let's assume we have already trained our model and found the optimal parameters $\theta$. Now, we can predict the sentiment of a new tweet.</p>
+        <ol>
+            <li><strong>Preprocessing</strong>: The raw tweet is cleaned (lowercased, tokenized, stopwords removed, stemmed).</li>
+            <li><strong>Feature Extraction</strong>: We create the feature vector $x$ using the word frequency method.</li>
+            <li><strong>Prediction</strong>: We compute the dot product $\theta^T x$ and apply the sigmoid function to get the probability.</li>
+        </ol>
+        <img src="./images/process-to-sentiment.png" alt="Process to sentiment">
+        <p>In this example, the dot product $\theta^T x$ is 4.92.</p>
+        $$ h(x) = g(4.92) = \frac{1}{1 + e^{-4.92}} \approx 0.993 $$
+        <p>Since $0.993 \ge 0.5$, the model correctly predicts a <strong>positive sentiment</strong>.</p>
+    </div>
+</body>
+</html>
