@@ -42,6 +42,7 @@ dependencies = [
 dev = [
     { name = "black" },
     { name = "flake8" },
+    { name = "ipykernel" },
     { name = "mypy" },
     { name = "pytest" },
 ]
@@ -78,6 +79,7 @@ requires-dist = [
 dev = [
     { name = "black", specifier = ">=23.0.0" },
     { name = "flake8", specifier = ">=6.0.0" },
+    { name = "ipykernel", specifier = ">=6.30.1" },
     { name = "mypy", specifier = ">=1.0.0" },
     { name = "pytest", specifier = ">=7.0.0" },
 ]
