@@ -27,6 +27,7 @@
 <body>
     <div class="container">
         <p>My goal in this section is to build a sentiment analysis model using Logistic Regression. This model will classify tweets as either positive or negative.</p>
+<img src="./images/sentiment-analysis-class.png" alt="Sentiment Analysis Class">
 
         <h1>1. The Supervised Learning Framework</h1>
         <p>The core idea is to train a model using labeled data. In our case, the features $X$ are the tweets, and the labels $Y$ are their sentiments (1 for positive, 0 for negative).</p>
@@ -41,6 +42,7 @@
 
         <h1>2. Feature Extraction: From Text to Numbers</h1>
         <p>A model can't understand raw text. We need to convert each tweet into a numerical vector.</p>
+<img src="./images/vector-representation.png" alt="Vector Representation">
 
         <h3>Method 1: Sparse Representation (Bag of Words)</h3>
         <p>The most straightforward way is to create a feature vector for each tweet based on a vocabulary $V$ (the set of all unique words across all tweets, our corpus).</p>
@@ -62,6 +64,7 @@
             <li><strong>Feature 2 (Positive Score)</strong>: The sum of the positive frequencies for every unique word in the tweet.</li>
             <li><strong>Feature 3 (Negative Score)</strong>: The sum of the negative frequencies for every unique word in the tweet.</li>
         </ol>
+        <img src="./images/pos-freq-sum.png" alt="Positive Frequency Sum">
         <img src="./images/feature-extraction-calculus.png" alt="Calculus">
         <p>This transforms a long, sparse vector into a very small, dense vector like `[1, 8, 11]`, which is much more efficient for training.</p>
         <img src="./images/features-3d-vector.png" alt="Features 3D vector">
@@ -70,10 +73,14 @@
         <p>To get meaningful features, we must clean the raw text first. The goal is to reduce noise and standardize the words.</p>
         <ol>
             <li><strong>Remove Noise</strong>: Get rid of elements that don't carry sentiment, like Twitter handles (<code>@user</code>), URLs, and retweet markers (<code>RT</code>).</li>
+            <img src="./images/handles-and-urls-removing.png" alt="Handles and URLs Removing">
             <li><strong>Tokenize</strong>: Split the text into a list of individual words (tokens).</li>
             <li><strong>Remove Stop Words and Punctuation</strong>: Filter out common words (<code>a</code>, <code>the</code>, <code>is</code>) and punctuation that don't add meaning. <em>Note: This step is context-dependent. For sentiment analysis, emoticons like <code>:)</code> are valuable and should be kept.</em></li>
+            <img src="./images/stop-words-removing.png" alt="Stop Words Removing">
             <li><strong>Stemming</strong>: Reduce words to their root form (e.g., <code>learning</code>, <code>learned</code> -> <code>learn</code>). This helps group related words, reducing the vocabulary size.</li>
+            <img src="./images/stemming.png" alt="Stemming">
             <li><strong>Lowercasing</strong>: Convert all text to lowercase to treat words like <code>Great</code> and <code>great</code> as the same token.</li>
+            <img src="./images/lowercasing.png" alt="Lowercasing">
         </ol>
         <p>After these steps, a raw tweet is transformed into a clean list of tokens, ready for feature extraction.</p>
         <img src="./images/original-tweet.png" alt="Original tweet">
@@ -83,6 +90,7 @@
         <p>The final step is to apply this process to our entire corpus of tweets. Each tweet is converted into its 3-feature vector. These vectors are then stacked together to form a single matrix <code>X</code>.</p>
         <p>Each row in the matrix <code>X</code> represents a tweet, and each column represents a feature. This matrix, along with the corresponding label vector <code>Y</code>, is what we'll use to train our logistic regression model.</p>
         <img src="./images/multiple-datas-matrix.png" alt="Multiple datas matrix">
+<img src="./images/multiple-datas-way.png" alt="Multiple datas way">
 
         <h1>5. Logistic Regression for Classification</h1>
         <p>After extracting features, the next step is to build a model that can classify a tweet as positive or negative. For this, we use Logistic Regression, a classification algorithm that predicts a probability.</p>
@@ -100,7 +108,9 @@
         <p>The sigmoid function is defined as:</p>
         $$ g(z) = \frac{1}{1 + e^{-z}} $$
         <p>This function always outputs a value between 0 and 1, which is perfect for representing a probability.</p>
-        <img src="./images/sigmoid-function-plot.png" alt="Sigmoid function plot">
+        <img src="./images/sigmoid-function-maths.png" alt="Sigmoid function maths">
+<img src="./images/sigmoid-function-plot.png" alt="Sigmoid function plot">
+<img src="./images/sigmoid-probability.png" alt="Sigmoid probability">
 
         <h3>The Decision Boundary</h3>
         <p>To make a final classification (0 or 1), we need a threshold. By convention, we use 0.5:</p>
@@ -128,6 +138,20 @@
         <p>In this example, the dot product $\theta^T x$ is 4.92.</p>
         $$ h(x) = g(4.92) = \frac{1}{1 + e^{-4.92}} \approx 0.993 $$
         <p>Since $0.993 \ge 0.5$, the model correctly predicts a <strong>positive sentiment</strong>.</p>
+    <h3>Logistic Regression Training: Gradient Descent</h3>
+        <p>To train a logistic regression classifier, we need to find the optimal parameters, $ \theta $, that minimize the <strong>cost function</strong>, $ J(\theta) $. This iterative process is carried out using the <strong>Gradient Descent</strong> algorithm.</p>
+        <img src="./images/cost-function-iterations.png" alt="Cost function iterations">
+        <p>Here's how the process works:</p>
+        <ol>
+            <li><strong>Initialize Parameters</strong>: Start by initializing the parameters $ \theta $ with arbitrary values, typically zeros.</li>
+            <li><strong>Calculate Prediction</strong>: For each observation, compute the prediction, $ h_\theta(x^{(i)}) $, using the sigmoid function and the current parameters.</li>
+            <li><strong>Calculate the Gradient</strong>: Compute the gradient of the cost function with respect to each parameter $ \theta_j $. The gradient indicates the direction and magnitude of the steepest ascent of the cost function. Our goal is to move in the opposite direction.</li>
+            <li><strong>Update Parameters</strong>: Update the parameters by subtracting a fraction of the gradient. The learning rate, $ \alpha $, controls the size of each step.
+                <p>$\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)$</p>
+            </li>
+            <li><strong>Iterate</strong>: Repeat steps 2 through 4 until convergence is reached. This occurs when the cost function no longer decreases significantly. At this point, we have found the parameters that minimize the cost function, allowing for the most accurate predictions possible.</li>
+        </ol>
+        <img src="./images/gradient-descent.png" alt="Gradient descent">
     </div>
 </body>
 </html>

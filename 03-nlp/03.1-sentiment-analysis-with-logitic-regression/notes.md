@@ -1,5 +1,7 @@
 My goal in this section is to build a sentiment analysis model using Logistic Regression. This model will classify tweets as either positive or negative.
 
+![Sentiment Analysis Class](./images/sentiment-analysis-class.png)
+
 # 1. The Supervised Learning Framework
 
 The core idea is to train a model using labeled data. In our case, the features `X` are the tweets, and the labels `Y` are their sentiments (1 for positive, 0 for negative).
@@ -15,6 +17,8 @@ The training process is an iterative loop:
 # 2. Feature Extraction: From Text to Numbers
 
 A model can't understand raw text. We need to convert each tweet into a numerical vector.
+
+![Vector Representation](./images/vector-representation.png)
 
 ### Method 1: Sparse Representation (Bag of Words)
 
@@ -44,6 +48,8 @@ Now, for any given tweet `m`, we can build its feature vector `Xm` as follows:
 2.  **Feature 2 (Positive Score)**: The sum of the positive frequencies for every unique word in the tweet.
 3.  **Feature 3 (Negative Score)**: The sum of the negative frequencies for every unique word in the tweet.
 
+![Positive Frequency Sum](./images/pos-freq-sum.png)
+
 ![Calculus](./images/feature-extraction-calculus.png)
 
 This transforms a long, sparse vector into a very small, dense vector like `[1, 8, 11]`, which is much more efficient for training.
@@ -55,10 +61,18 @@ This transforms a long, sparse vector into a very small, dense vector like `[1, 
 To get meaningful features, we must clean the raw text first. The goal is to reduce noise and standardize the words.
 
 1.  **Remove Noise**: Get rid of elements that don't carry sentiment, like Twitter handles (`@user`), URLs, and retweet markers (`RT`).
+
+    ![Handles and URLs Removing](./images/handles-and-urls-removing.png)
 2.  **Tokenize**: Split the text into a list of individual words (tokens).
 3.  **Remove Stop Words and Punctuation**: Filter out common words (`a`, `the`, `is`) and punctuation that don't add meaning. *Note: This step is context-dependent. For sentiment analysis, emoticons like `:)` are valuable and should be kept.*
+
+    ![Stop Words Removing](./images/stop-words-removing.png)
 4.  **Stemming**: Reduce words to their root form (e.g., `learning`, `learned` -> `learn`). This helps group related words, reducing the vocabulary size.
+
+    ![Stemming](./images/stemming.png)
 5.  **Lowercasing**: Convert all text to lowercase to treat words like `Great` and `great` as the same token.
+
+    ![Lowercasing](./images/lowercasing.png)
 
 After these steps, a raw tweet is transformed into a clean list of tokens, ready for feature extraction.
 
@@ -72,6 +86,7 @@ The final step is to apply this process to our entire corpus of tweets. Each twe
 Each row in the matrix `X` represents a tweet, and each column represents a feature. This matrix, along with the corresponding label vector `Y`, is what we'll use to train our logistic regression model.
 
 ![Multiple datas matrix](./images/multiple-datas-matrix.png)
+![Multiple datas way](./images/multiple-datas-way.png)
 
 # 5. Logistic Regression for Classification
 
@@ -92,7 +107,9 @@ The sigmoid function is defined as:
 $$ g(z) = \frac{1}{1 + e^{-z}} $$
 This function always outputs a value between 0 and 1, which is perfect for representing a probability.
 
+![Sigmoid function maths](./images/sigmoid-function-maths.png)
 ![Sigmoid function plot](./images/sigmoid-function-plot.png)
+![Sigmoid probability](./images/sigmoid-probability.png)
 
 ### The Decision Boundary
 
@@ -125,3 +142,25 @@ Let's assume we have already trained our model and found the optimal parameters 
 In this example, the dot product $\theta^T x$ is 4.92.
 $$ h(x) = g(4.92) = \frac{1}{1 + e^{-4.92}} \approx 0.993 $$
 Since $0.993 \ge 0.5$, the model correctly predicts a **positive sentiment**.
+
+### Logistic Regression Training: Gradient Descent
+
+To train a logistic regression classifier, we need to find the optimal parameters, $\theta$, that minimize the **cost function**, $J(\theta)$. This iterative process is carried out using the **Gradient Descent** algorithm.
+
+![Cost function iterations](./images/cost-function-iterations.png)
+
+Here's how the process works:
+
+1.  **Initialize Parameters**: Start by initializing the parameters $\theta$ with arbitrary values, typically zeros.
+
+2.  **Calculate Prediction**: For each observation, compute the prediction, $h_\theta(x^{(i)})$, using the sigmoid function and the current parameters.
+
+3.  **Calculate the Gradient**: Compute the gradient of the cost function with respect to each parameter $\theta_j$. The gradient indicates the direction and magnitude of the steepest ascent of the cost function. Our goal is to move in the opposite direction.
+
+4.  **Update Parameters**: Update the parameters by subtracting a fraction of the gradient. The learning rate, $\alpha$, controls the size of each step.
+
+    $\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)$
+
+5.  **Iterate**: Repeat steps 2 through 4 until convergence is reached. This occurs when the cost function no longer decreases significantly. At this point, we have found the parameters that minimize the cost function, allowing for the most accurate predictions possible.
+
+![Gradient descent](./images/gradient-descent.png)

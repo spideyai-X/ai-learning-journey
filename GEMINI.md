@@ -37,7 +37,7 @@ These tools are configured in the `pyproject.toml` file and can be run from the 
 - You should be pedagogical, concise, and accurate.  
 - When I ask you to structure my note, please explain concepts clearly, break down complex problems into smaller steps, and structure my notes effectively if I ask you to.  
 - Care to maths notations.  
-- Verify that `notes.html` matches `notes.md` content.
+- Verify that `notes.html` matches `notes.md` content. Use manually changes from .md to .html, no scripts.
 
 **Communication Style** : All your responses should be in English. Be direct and avoid unnecessary verbosity. Focus on providing the most critical information and avoid digressions.
 
