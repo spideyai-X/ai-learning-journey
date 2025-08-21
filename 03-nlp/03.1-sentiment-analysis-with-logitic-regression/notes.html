@@ -44,7 +44,7 @@
         <p>A model can't understand raw text. We need to convert each tweet into a numerical vector.</p>
 <img src="./images/vector-representation.png" alt="Vector Representation">
 
-        <h3>Method 1: Sparse Representation (Bag of Words)</h3>
+        <h3>2.1. Method 1: Sparse Representation (Bag of Words)</h3>
         <p>The most straightforward way is to create a feature vector for each tweet based on a vocabulary $V$ (the set of all unique words across all tweets, our corpus).</p>
         <p>For a single tweet, the feature vector $x$ would have the size of $V$. Each element of $x$ is 1 if the corresponding word from $V$ is in the tweet, and 0 otherwise. This can be expressed as:
         $$x_i = \begin{cases} 1 & \text{if word } i \in \text{tweet} \\ 0 & \text{otherwise} \end{cases}$$
@@ -54,7 +54,7 @@
         <p><strong>Problem</strong>: If $V$ contains 10,000 words, our model needs to train on 10,001 parameters ($n+1$, where $n$ is the size of $V$ and $+1$ is for the bias term). This can be computationally very expensive.</p>
         <img src="./images/problem-with-sparse-representation.png" alt="Problem with sparse representation">
 
-        <h3>Method 2: Feature Engineering with Word Frequencies</h3>
+        <h3>2.2. Method 2: Feature Engineering with Word Frequencies</h3>
         <p>To avoid large vectors, we can engineer more meaningful features. Instead of a huge sparse vector, we can represent each tweet with a dense vector of only 3 features.</p>
         <p>First, we pre-calculate a frequency map (`freqs`) for every word in our vocabulary $V$. This map stores how many times each word appears in positive tweets versus negative tweets.</p>
         <img src="./images/word-frequency.png" alt="Word frequency">
@@ -95,7 +95,7 @@
         <h1>5. Logistic Regression for Classification</h1>
         <p>After extracting features, the next step is to build a model that can classify a tweet as positive or negative. For this, we use Logistic Regression, a classification algorithm that predicts a probability.</p>
 
-        <h3>The Hypothesis Function</h3>
+        <h3>5.1. The Hypothesis Function</h3>
         <p>The core of logistic regression is the <strong>hypothesis function</strong>, denoted as $h(x)$, which estimates the probability that the output is 1. In our case, it's the probability of a tweet being positive.</p>
         <p>The hypothesis is defined using the <strong>sigmoid function</strong>, $g(z)$:</p>
         $$ h(x) = g(\theta^T x) $$
@@ -112,7 +112,7 @@
 <img src="./images/sigmoid-function-plot.png" alt="Sigmoid function plot">
 <img src="./images/sigmoid-probability.png" alt="Sigmoid probability">
 
-        <h3>The Decision Boundary</h3>
+        <h3>5.2. The Decision Boundary</h3>
         <p>To make a final classification (0 or 1), we need a threshold. By convention, we use 0.5:</p>
         <ul>
             <li>If $h(x) \ge 0.5$, we predict <strong>positive sentiment</strong> (Y=1).</li>
@@ -123,11 +123,11 @@
         $$ \theta^T x < 0 \implies \text{Predict Negative} $$
         <p>The line defined by $\theta^T x = 0$ is called the <strong>decision boundary</strong>. It's the line that separates the two predicted classes.</p>
 
-        <h3>Training the Model</h3>
+        <h3>5.3. Training the Model</h3>
         <p>The goal of training is to find the optimal parameters $\theta$ that minimize the difference between our predictions ($\hat{Y}$) and the actual labels ($Y$). This is achieved by minimizing a <strong>cost function</strong> using an optimization algorithm like Gradient Descent.</p>
         <img src="./images/logistic-regression-overview.png" alt="Overview of Logistic Regression">
 
-        <h3>Example Walkthrough</h3>
+        <h3>5.4. Example Walkthrough</h3>
         <p>Let's assume we have already trained our model and found the optimal parameters $\theta$. Now, we can predict the sentiment of a new tweet.</p>
         <ol>
             <li><strong>Preprocessing</strong>: The raw tweet is cleaned (lowercased, tokenized, stopwords removed, stemmed).</li>
@@ -138,7 +138,7 @@
         <p>In this example, the dot product $\theta^T x$ is 4.92.</p>
         $$ h(x) = g(4.92) = \frac{1}{1 + e^{-4.92}} \approx 0.993 $$
         <p>Since $0.993 \ge 0.5$, the model correctly predicts a <strong>positive sentiment</strong>.</p>
-    <h3>Logistic Regression Training: Gradient Descent</h3>
+    <h3>5.5. Logistic Regression Training: Gradient Descent</h3>
         <p>To train a logistic regression classifier, we need to find the optimal parameters, $ \theta $, that minimize the <strong>cost function</strong>, $ J(\theta) $. This iterative process is carried out using the <strong>Gradient Descent</strong> algorithm.</p>
         <img src="./images/cost-function-iterations.png" alt="Cost function iterations">
         <p>Here's how the process works:</p>

@@ -20,7 +20,7 @@ A model can't understand raw text. We need to convert each tweet into a numerica
 
 ![Vector Representation](./images/vector-representation.png)
 
-### Method 1: Sparse Representation (Bag of Words)
+### 2.1. Method 1: Sparse Representation (Bag of Words)
 
 The most straightforward way is to create a feature vector for each tweet based on a vocabulary `V` (the set of all unique words across all tweets, our corpus).
 
@@ -34,7 +34,7 @@ This is called a **sparse representation** because for a large vocabulary, the v
 
 ![Problem with sparse representation](./images/problem-with-sparse-representation.png)
 
-### Method 2: Feature Engineering with Word Frequencies
+### 2.2. Method 2: Feature Engineering with Word Frequencies
 
 To avoid large vectors, we can engineer more meaningful features. Instead of a huge sparse vector, we can represent each tweet with a dense vector of only 3 features.
 
@@ -92,7 +92,7 @@ Each row in the matrix `X` represents a tweet, and each column represents a feat
 
 After extracting features, the next step is to build a model that can classify a tweet as positive or negative. For this, we use Logistic Regression, a classification algorithm that predicts a probability.
 
-### The Hypothesis Function
+### 5.1. The Hypothesis Function
 
 The core of logistic regression is the **hypothesis function**, denoted as $h(x)$, which estimates the probability that the output is 1. In our case, it's the probability of a tweet being positive.
 
@@ -111,7 +111,7 @@ This function always outputs a value between 0 and 1, which is perfect for repre
 ![Sigmoid function plot](./images/sigmoid-function-plot.png)
 ![Sigmoid probability](./images/sigmoid-probability.png)
 
-### The Decision Boundary
+### 5.2. The Decision Boundary
 
 To make a final classification (0 or 1), we need a threshold. By convention, we use 0.5:
 - If $h(x) \ge 0.5$, we predict **positive sentiment** (Y=1).
@@ -123,13 +123,13 @@ $$ \theta^T x < 0 \implies \text{Predict Negative} $$
 
 The line defined by $\theta^T x = 0$ is called the **decision boundary**. It's the line that separates the two predicted classes.
 
-### Training the Model
+### 5.3. Training the Model
 
 The goal of training is to find the optimal parameters $\theta$ that minimize the difference between our predictions ($\hat{Y}$) and the actual labels ($Y$). This is achieved by minimizing a **cost function** using an optimization algorithm like Gradient Descent.
 
 ![Overview of Logistic Regression](./images/logistic-regression-overview.png)
 
-### Example Walkthrough
+### 5.4. Example Walkthrough
 
 Let's assume we have already trained our model and found the optimal parameters $\theta$. Now, we can predict the sentiment of a new tweet.
 
@@ -143,7 +143,7 @@ In this example, the dot product $\theta^T x$ is 4.92.
 $$ h(x) = g(4.92) = \frac{1}{1 + e^{-4.92}} \approx 0.993 $$
 Since $0.993 \ge 0.5$, the model correctly predicts a **positive sentiment**.
 
-### Logistic Regression Training: Gradient Descent
+### 5.5. Logistic Regression Training: Gradient Descent
 
 To train a logistic regression classifier, we need to find the optimal parameters, $\theta$, that minimize the **cost function**, $J(\theta)$. This iterative process is carried out using the **Gradient Descent** algorithm.
 
