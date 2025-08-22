@@ -152,6 +152,54 @@
             <li><strong>Iterate</strong>: Repeat steps 2 through 4 until convergence is reached. This occurs when the cost function no longer decreases significantly. At this point, we have found the parameters that minimize the cost function, allowing for the most accurate predictions possible.</li>
         </ol>
         <img src="./images/gradient-descent.png" alt="Gradient descent">
+
+        <h1>6. Evaluating the Model</h1>
+        <p>Once the model is trained, we need to evaluate its performance on data it has never seen before. This process tells us how well our model <strong>generalizes</strong> to new, real-world examples. For this, we use a <strong>validation set</strong> (or test set) composed of a feature matrix $X_{val}$ and a label vector $Y_{val}$.</p>
+
+        <h3>6.1. Generating Predictions on the Validation Set</h3>
+        <p>The first step is to use our trained parameters $\theta$ to make predictions on the validation data.</p>
+        <ol>
+            <li><strong>Compute Probabilities</strong>: We feed the validation feature matrix $X_{val}$ into our hypothesis function. This computes the predicted probability for each tweet in the validation set.
+                ${\hat{P}}_{val} = g(X_{val} \theta)$
+                The result, ${\hat{P}}_{val}$, is a vector of probabilities, where each element is between 0 and 1.
+                <br>
+                <img src="./images/model-prediction-vector.png" alt="Model prediction vector">
+            </li>
+            <li><strong>Apply the Decision Boundary</strong>: To get a final class label (0 or 1), we apply our 0.5 threshold to the probability vector.
+                $y_{pred} = ({\hat{P}}_{val} \ge 0.5)$
+                This operation creates a new vector, <code>y_pred</code>, populated with 0s and 1s, representing the model's final prediction for each tweet (0 for negative, 1 for positive).
+                <br>
+                <img src="./images/model-prediction-compute.png" alt="Model prediction compute">
+            </li>
+        </ol>
+
+        <h3>6.2. Measuring Performance with Accuracy</h3>
+        <p>Now that we have a prediction vector <code>y_pred</code>, we can compare it to the true labels in $Y_{val}$ to calculate the model's accuracy.</p>
+        <p><strong>Accuracy</strong> is the proportion of predictions that the model got correct.</p>
+        <ol>
+            <li><strong>Compare Predictions to True Labels</strong>: We perform an element-wise comparison between our prediction vector <code>y_pred</code> and the true label vector $Y_{val}$. This results in a vector of booleans (True/False) or integers (1/0), where a <code>1</code> indicates a correct prediction and a <code>0</code> indicates an error.
+                <br>
+                <img src="./images/model-accuracy-compute.png" alt="Model accuracy compute">
+                <p>For example, if <code>y_pred = [0, 1, 1]</code> and <code>Y_val = [0, 0, 1]</code>, the comparison yields <code>[1, 0, 1]</code>.</p>
+                <img src="./images/model-accuracy-compute-compare.png" alt="Model accuracy vector">
+            </li>
+            <li><strong>Calculate the Accuracy Score</strong>: The accuracy is the sum of the correct predictions divided by the total number of examples.
+                $\text{Accuracy} = \frac{\text{Number of Correct Predictions}}{\text{Total Number of Predictions}} = \frac{\sum_{i=1}^{m} (y_{pred}^{(i)} == y_{val}^{(i)})}{m}$
+                Where $m$ is the number of examples in the validation set.
+                <p>For example, if we had 4 correct predictions out of 5 total tweets, the accuracy would be:</p>
+                $\text{Accuracy} = \frac{4}{5} = 0.8$
+                <p>This means the model has an <strong>80% accuracy</strong> on the validation set.</p>
+            </li>
+        </ol>
+
+        <h3>6.3. A Note on Data Splitting</h3>
+        <p>To ensure an unbiased evaluation, the dataset is typically split into three parts before training begins:</p>
+        <ul>
+            <li><strong>Training Set</strong>: The largest portion of the data (e.g., 80%), used to train the model and find the optimal parameters $\theta$.</li>
+            <li><strong>Validation Set</strong>: A smaller portion (e.g., 10%), used to evaluate the model during development and tune hyperparameters (like the learning rate). The accuracy we calculated above is on this set.</li>
+            <li><strong>Test Set</strong>: A final, held-out portion (e.g., 10%) that the model never sees during training or tuning. This set is used only once at the very end to provide a final, unbiased measure of the model's real-world performance.</li>
+        </ul>
+        <p>A common split is 80% for training, 10% for validation, and 10% for testing.</p>
     </div>
 </body>
 </html>
