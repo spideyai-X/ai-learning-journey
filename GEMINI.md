@@ -12,6 +12,7 @@ The repository is organized into modules, with each module containing its own se
 
 -   `03-nlp/`: Contains the Natural Language Processing modules.
     -   `03.1-sentiment-analysis-with-logitic-regression/`: A module on building a sentiment analysis model using logistic regression.
+    -   `03.2-sentiment-analysis-with-naive/beyes/`: A module on building a sentiment analysis model using naive beyes.
         -   `notes.md`: Detailed notes on the theory and implementation of the model.
         -   `notebooks/`: Jupyter notebooks with the practical implementation.
         -   `data/`: The dataset used for training and testing the model.
@@ -20,13 +21,7 @@ The repository is organized into modules, with each module containing its own se
 -   `pyproject.toml`: Defines the Python project dependencies and development tools.
 -   `package.json`: Defines the Node.js dependencies, primarily for the Gemini CLI.
 
-## Development Conventions
-
-The project follows standard Python development conventions, with a focus on clean and readable code.
-
--   **Code Formatting**: The project uses `black` for code formatting and `isort` for import sorting.
--   **Linting**: `flake8` is used for linting the Python code.
--   **Type Checking**: `mypy` is used for static type checking.
+## Env
 
 These tools are configured in the `pyproject.toml` file and can be run from the command line.
 
@@ -44,6 +39,6 @@ These tools are configured in the `pyproject.toml` file and can be run from the 
 
 **Strict Rules** : To ensure project integrity and consistency, please adhere to these strict rules:
 
-- NEVER modify any files in the data/ directory.  
+- NEVER modify any files in the `data/` directory.  
 - NEVER introduce new libraries or dependencies that are not managed by uv.  
 
