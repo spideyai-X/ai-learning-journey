@@ -4,12 +4,16 @@ Welcome to my AI Learning Journey. This repository documents my progress through
 
 ## Learning Modules
 
-***[WIP]*** **Natural Language Processing** : [Sentiment Analysis with Logistic Regression](https://spideystreet.github.io/ai-learning-journey/03-nlp/03.1-sentiment-analysis-with-logitic-regression/notes.html)  
+***[WIP]*** **Natural Language Processing** : 
+- [Sentiment Analysis with Logistic Regression](https://spideystreet.github.io/ai-learning-journey/03-nlp/03.1-sentiment-analysis-with-logitic-regression/notes.html)  
+- [Sentiment Analysis with Naive Bayes](https://spideystreet.github.io/ai-learning-journey/03-nlp/03.2-sentiment-analysis-with-naive-bayes/notes.html)
+
 *(More modules will be added as I progress.)*
 
 ## Connect with Me
 
-**LinkedIn**: [Hicham Djebali](https://www.linkedin.com/in/hicham-djebali/)
+**𝕏**: [@spideystreet](https://x.com/spideystreet)
+**LinkedIn**: [@Hicham](https://www.linkedin.com/in/hicham-djebali/)
 
 ## License
 
