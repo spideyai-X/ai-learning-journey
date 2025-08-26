@@ -1,6 +1,7 @@
 # AI Learning Journey
 
-Welcome to my AI Learning Journey. This repository documents my progress through the different domains of Artificial Intelligence, from foundational concepts in Machine Learning to the complexities of Natural Language Processing (NLP) and beyond. Join me as I explore, experiment, and build! :)
+Welcome to my AI Learning Journey. This repository documents my progress through the different domains of Artificial Intelligence, from foundational concepts in Machine Learning.  
+Im actually learning the complexities of Natural Language Processing (NLP) and beyond. Join me as I explore, experiment, and build! :)
 
 ## Learning Modules
 
