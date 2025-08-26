@@ -13,7 +13,7 @@ Im actually learning the complexities of Natural Language Processing (NLP) and b
 
 ## Connect with Me
 
-**𝕏**: [@spideystreet](https://x.com/spideystreet)
+**𝕏**: [@spideystreet](https://x.com/spideystreet)  
 **LinkedIn**: [@Hicham](https://www.linkedin.com/in/hicham-djebali/)
 
 ## License
