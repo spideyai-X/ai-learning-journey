@@ -27,7 +27,7 @@
 <body>
     <div class="container">
         <p>My goal in this section is to build a sentiment analysis model using Logistic Regression. This model will classify tweets as either positive or negative.</p>
-<img src="./images/sentiment-analysis-class.png" alt="Sentiment Analysis Class">
+        <img src="./images/sentiment-analysis-class.png" alt="Sentiment Analysis Class">
 
         <h1>1. The Supervised Learning Framework</h1>
         <p>The core idea is to train a model using labeled data. In our case, the features $X$ are the tweets, and the labels $Y$ are their sentiments (1 for positive, 0 for negative).</p>
@@ -35,20 +35,19 @@
         <ol>
             <li>Input features $X$ into a prediction function.</li>
             <li>The function, using its current parameters $\theta$, generates a prediction $\hat{Y}$.</li>
-            <li>We calculate the `Cost`, which measures how far $\hat{Y}$ is from the actual label $Y$.</li>
+            <li>We calculate the <strong>Cost</strong>, which measures how far $\hat{Y}$ is from the actual label $Y$.</li>
             <li>We adjust the parameters $\theta$ (using an optimizer like Gradient Descent) to minimize this cost.</li>
         </ol>
         <img src="./images/supervised-ml-training.png" alt="Supervised ML Training">
 
         <h1>2. Feature Extraction: From Text to Numbers</h1>
         <p>A model can't understand raw text. We need to convert each tweet into a numerical vector.</p>
-<img src="./images/vector-representation.png" alt="Vector Representation">
+        <img src="./images/vector-representation.png" alt="Vector Representation">
 
         <h3>2.1. Method 1: Sparse Representation (Bag of Words)</h3>
         <p>The most straightforward way is to create a feature vector for each tweet based on a vocabulary $V$ (the set of all unique words across all tweets, our corpus).</p>
-        <p>For a single tweet, the feature vector $x$ would have the size of $V$. Each element of $x$ is 1 if the corresponding word from $V$ is in the tweet, and 0 otherwise. This can be expressed as:
+        <p>For a single tweet, the feature vector $x$ would have the size of $V$. Each element of $x$ is 1 if the corresponding word from $V$ is in the tweet, and 0 otherwise. This can be expressed as:</p>
         $$x_i = \begin{cases} 1 & \text{if word } i \in \text{tweet} \\ 0 & \text{otherwise} \end{cases}$$
-        </p>
         <img src="./images/feature-extraction.png" alt="Feature extraction">
         <p>This is called a <strong>sparse representation</strong> because for a large vocabulary, the vector will be mostly zeros.</p>
         <p><strong>Problem</strong>: If $V$ contains 10,000 words, our model needs to train on 10,001 parameters ($n+1$, where $n$ is the size of $V$ and $+1$ is for the bias term). This can be computationally very expensive.</p>
@@ -56,17 +55,17 @@
 
         <h3>2.2. Method 2: Feature Engineering with Word Frequencies</h3>
         <p>To avoid large vectors, we can engineer more meaningful features. Instead of a huge sparse vector, we can represent each tweet with a dense vector of only 3 features.</p>
-        <p>First, we pre-calculate a frequency map (`freqs`) for every word in our vocabulary $V$. This map stores how many times each word appears in positive tweets versus negative tweets.</p>
+        <p>First, we pre-calculate a frequency map (<code>freqs</code>) for every word in our vocabulary $V$. This map stores how many times each word appears in positive tweets versus negative tweets.</p>
         <img src="./images/word-frequency.png" alt="Word frequency">
-        <p>Now, for any given tweet $m$, we can build its feature vector $X_m$ as follows:</p>
+        <p>Now, for any given tweet $m$, we can build its feature vector $x_m$ as follows:</p>
         <ol>
-            <li><strong>Feature 1 (Bias Unit)</strong>: Always `1`.</li>
+            <li><strong>Feature 1 (Bias Unit)</strong>: Always <code>1</code>.</li>
             <li><strong>Feature 2 (Positive Score)</strong>: The sum of the positive frequencies for every unique word in the tweet.</li>
             <li><strong>Feature 3 (Negative Score)</strong>: The sum of the negative frequencies for every unique word in the tweet.</li>
         </ol>
         <img src="./images/pos-freq-sum.png" alt="Positive Frequency Sum">
         <img src="./images/feature-extraction-calculus.png" alt="Calculus">
-        <p>This transforms a long, sparse vector into a very small, dense vector like `[1, 8, 11]`, which is much more efficient for training.</p>
+        <p>This transforms a long, sparse vector into a very small, dense vector like <code>[1, 8, 11]</code>, which is much more efficient for training.</p>
         <img src="./images/features-3d-vector.png" alt="Features 3D vector">
 
         <h1>3. Text Preprocessing</h1>
@@ -90,7 +89,7 @@
         <p>The final step is to apply this process to our entire corpus of tweets. Each tweet is converted into its 3-feature vector. These vectors are then stacked together to form a single matrix <code>X</code>.</p>
         <p>Each row in the matrix <code>X</code> represents a tweet, and each column represents a feature. This matrix, along with the corresponding label vector <code>Y</code>, is what we'll use to train our logistic regression model.</p>
         <img src="./images/multiple-datas-matrix.png" alt="Multiple datas matrix">
-<img src="./images/multiple-datas-way.png" alt="Multiple datas way">
+        <img src="./images/multiple-datas-way.png" alt="Multiple datas way">
 
         <h1>5. Logistic Regression for Classification</h1>
         <p>After extracting features, the next step is to build a model that can classify a tweet as positive or negative. For this, we use Logistic Regression, a classification algorithm that predicts a probability.</p>
@@ -109,8 +108,8 @@
         $$ g(z) = \frac{1}{1 + e^{-z}} $$
         <p>This function always outputs a value between 0 and 1, which is perfect for representing a probability.</p>
         <img src="./images/sigmoid-function-maths.png" alt="Sigmoid function maths">
-<img src="./images/sigmoid-function-plot.png" alt="Sigmoid function plot">
-<img src="./images/sigmoid-probability.png" alt="Sigmoid probability">
+        <img src="./images/sigmoid-function-plot.png" alt="Sigmoid function plot">
+        <img src="./images/sigmoid-probability.png" alt="Sigmoid probability">
 
         <h3>5.2. The Decision Boundary</h3>
         <p>To make a final classification (0 or 1), we need a threshold. By convention, we use 0.5:</p>
@@ -138,15 +137,16 @@
         <p>In this example, the dot product $\theta^T x$ is 4.92.</p>
         $$ h(x) = g(4.92) = \frac{1}{1 + e^{-4.92}} \approx 0.993 $$
         <p>Since $0.993 \ge 0.5$, the model correctly predicts a <strong>positive sentiment</strong>.</p>
-    <h3>5.5. Logistic Regression Training: Gradient Descent</h3>
-        <p>To train a logistic regression classifier, we need to find the optimal parameters, $ \theta $, that minimize the <strong>cost function</strong>, $ J(\theta) $. This iterative process is carried out using the <strong>Gradient Descent</strong> algorithm.</p>
+
+        <h3>5.5. Logistic Regression Training: Gradient Descent</h3>
+        <p>To train a logistic regression classifier, we need to find the optimal parameters, $\theta$, that minimize the <strong>cost function</strong>, $J(\theta)$. This iterative process is carried out using the <strong>Gradient Descent</strong> algorithm.</p>
         <img src="./images/cost-function-iterations.png" alt="Cost function iterations">
         <p>Here's how the process works:</p>
         <ol>
-            <li><strong>Initialize Parameters</strong>: Start by initializing the parameters $ \theta $ with arbitrary values, typically zeros.</li>
-            <li><strong>Calculate Prediction</strong>: For each observation, compute the prediction, $ h_\theta(x^{(i)}) $, using the sigmoid function and the current parameters.</li>
-            <li><strong>Calculate the Gradient</strong>: Compute the gradient of the cost function with respect to each parameter $ \theta_j $. The gradient indicates the direction and magnitude of the steepest ascent of the cost function. Our goal is to move in the opposite direction.</li>
-            <li><strong>Update Parameters</strong>: Update the parameters by subtracting a fraction of the gradient. The learning rate, $ \alpha $, controls the size of each step.
+            <li><strong>Initialize Parameters</strong>: Start by initializing the parameters $\theta$ with arbitrary values, typically zeros.</li>
+            <li><strong>Calculate Prediction</strong>: For each observation, compute the prediction, $h_\theta(x^{(i)})$, using the sigmoid function and the current parameters.</li>
+            <li><strong>Calculate the Gradient</strong>: Compute the gradient of the cost function with respect to each parameter $\theta_j$. The gradient indicates the direction and magnitude of the steepest ascent of the cost function. Our goal is to move in the opposite direction.</li>
+            <li><strong>Update Parameters</strong>: Update the parameters by subtracting a fraction of the gradient. The learning rate, $\alpha$, controls the size of each step.
                 <p>$\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)$</p>
             </li>
             <li><strong>Iterate</strong>: Repeat steps 2 through 4 until convergence is reached. This occurs when the cost function no longer decreases significantly. At this point, we have found the parameters that minimize the cost function, allowing for the most accurate predictions possible.</li>
@@ -160,13 +160,13 @@
         <p>The first step is to use our trained parameters $\theta$ to make predictions on the validation data.</p>
         <ol>
             <li><strong>Compute Probabilities</strong>: We feed the validation feature matrix $X_{val}$ into our hypothesis function. This computes the predicted probability for each tweet in the validation set.
-                ${\hat{P}}_{val} = g(X_{val} \theta)$
-                The result, ${\hat{P}}_{val}$, is a vector of probabilities, where each element is between 0 and 1.
+                $$\hat{P}_{val} = g(X_{val} \theta)$$
+                The result, $\hat{P}_{val}$, is a vector of probabilities, where each element is between 0 and 1.
                 <br>
                 <img src="./images/model-prediction-vector.png" alt="Model prediction vector">
             </li>
             <li><strong>Apply the Decision Boundary</strong>: To get a final class label (0 or 1), we apply our 0.5 threshold to the probability vector.
-                $y_{pred} = ({\hat{P}}_{val} \ge 0.5)$
+                $$y_{pred} = (\hat{P}_{val} \ge 0.5)$$
                 This operation creates a new vector, <code>y_pred</code>, populated with 0s and 1s, representing the model's final prediction for each tweet (0 for negative, 1 for positive).
                 <br>
                 <img src="./images/model-prediction-compute.png" alt="Model prediction compute">
@@ -184,10 +184,10 @@
                 <img src="./images/model-accuracy-compute-compare.png" alt="Model accuracy vector">
             </li>
             <li><strong>Calculate the Accuracy Score</strong>: The accuracy is the sum of the correct predictions divided by the total number of examples.
-                $\text{Accuracy} = \frac{\text{Number of Correct Predictions}}{\text{Total Number of Predictions}} = \frac{\sum_{i=1}^{m} (y_{pred}^{(i)} == y_{val}^{(i)})}{m}$
+                $$\text{Accuracy} = \frac{\text{Number of Correct Predictions}}{\text{Total Number of Predictions}} = \frac{\sum_{i=1}^{m} (y_{pred}^{(i)} == y_{val}^{(i)})}{m}$$
                 Where $m$ is the number of examples in the validation set.
                 <p>For example, if we had 4 correct predictions out of 5 total tweets, the accuracy would be:</p>
-                $\text{Accuracy} = \frac{4}{5} = 0.8$
+                $$\text{Accuracy} = \frac{4}{5} = 0.8$$
                 <p>This means the model has an <strong>80% accuracy</strong> on the validation set.</p>
             </li>
         </ol>
@@ -200,6 +200,22 @@
             <li><strong>Test Set</strong>: A final, held-out portion (e.g., 10%) that the model never sees during training or tuning. This set is used only once at the very end to provide a final, unbiased measure of the model's real-world performance.</li>
         </ul>
         <p>A common split is 80% for training, 10% for validation, and 10% for testing.</p>
+
+        <h1>7. Pros and Cons of Logistic Regression</h1>
+        <h3>Pros:</h3>
+        <ul>
+            <li><strong>Interpretable</strong>: The model provides clear probabilities and the coefficients can be interpreted as feature importance.</li>
+            <li><strong>Efficient</strong>: Training and prediction are computationally fast, especially with our 3-feature representation.</li>
+            <li><strong>No Assumptions</strong>: Unlike Naive Bayes, it doesn't assume conditional independence between features.</li>
+            <li><strong>Probabilistic Output</strong>: Provides probability scores, not just binary predictions.</li>
+        </ul>
+        <h3>Cons:</h3>
+        <ul>
+            <li><strong>Linear Decision Boundary</strong>: Can only learn linear relationships between features and the target.</li>
+            <li><strong>Feature Engineering Required</strong>: Requires careful feature engineering (like our word frequency approach) to work well with text data.</li>
+            <li><strong>May Underfit</strong>: For complex patterns, it might not capture all the nuances in the data.</li>
+            <li><strong>Feature Scaling</strong>: Sensitive to the scale of input features, though less critical with our binary features.</li>
+        </ul>
     </div>
 </body>
 </html>
