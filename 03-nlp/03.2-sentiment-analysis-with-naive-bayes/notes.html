@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis with Naive Bayes Notes</title>
+
+    <link rel="stylesheet" href="../../styles/main.css">
+    
+    <link rel="stylesheet" href="../../styles/katex.min.css">
+    <script defer src="../../styles/katex.min.js"></script>
+    <script defer src="../../styles/auto-render.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '\[', right: '\]', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}
+                ]
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <p>My goal in this section is to build a sentiment analysis model using a new classification method: <strong>Naive Bayes</strong>. This technique is particularly useful as it is simple to implement, fast to train, and provides a strong baseline for text classification tasks.</p>
+        <p>Unlike logistic regression, which finds a separating line between classes, Naive Bayes works by calculating the probability of a tweet belonging to the positive or negative class and then selecting the class with the highest probability.</p>
+
+        <h1>1. The Foundation: Bayes' Rule</h1>
+        <p>At the heart of this method is Bayes' Rule, which is a way of updating our beliefs based on new evidence. It relies on conditional probabilities.</p>
+
+        <h3>1.1. Conditional Probability</h3>
+        <p>A conditional probability answers the question: "What is the probability of event A happening, <em>given that</em> event B has already happened?" This is written as $P(A|B)$.</p>
+        <p>For example, what is the probability that a tweet is positive, given that it contains the word "happy"? We can visualize this by looking at the intersection of events. The conditional probability reduces our sample space from all tweets to only the tweets containing the word "happy".</p>
+        <img src="./images/probability-intertection.png" alt="Conditional Probability">
+        <p>The formula for conditional probability is:
+        $$ P(A|B) = \frac{P(A \cap B)}{P(B)} $$
+        Where $P(A \cap B)$ is the probability of both A and B happening.</p>
+
+        <h3>1.2. Bayes' Rule</h3>
+        <p>Bayes' Rule is derived from the conditional probability formula and allows us to "flip" the condition:
+        $$ P(A|B) = \frac{P(B|A)P(A)}{P(B)} $$
+        This is a powerful tool because it's often easier to calculate $P(B|A)$ than $P(A|B)$.</p>
+
+        <h1>2. Naive Bayes for Sentiment Analysis</h1>
+        <p>To classify a tweet, we want to determine if it's more likely to be positive or negative. We can frame this using Bayes' Rule. We want to compare:</p>
+        <ul>
+            <li>$P(\text{positive} | \text{tweet})$</li>
+            <li>$P(\text{negative} | \text{tweet})$</li>
+        </ul>
+        <p>Let's focus on the positive case. According to Bayes' Rule:
+        $$ P(\text{pos} | \text{tweet}) = \frac{P(\text{tweet} | \text{pos}) P(\text{pos})}{P(\text{tweet})} $$
+        </p>
+        <ul>
+            <li>$P(\text{pos} | \text{tweet})$ is the <strong>posterior probability</strong>: the probability that the tweet is positive given its content. This is what we want to calculate.</li>
+            <li>$P(\text{tweet} | \text{pos})$ is the <strong>likelihood</strong>: the probability of observing this specific tweet, given that it belongs to the positive class.</li>
+            <li>$P(\text{pos})$ is the <strong>prior probability</strong>: the overall probability of any tweet being positive, based on our training data.</li>
+            <li>$P(\text{tweet})$ is the <strong>marginal probability</strong>: the overall probability of observing this tweet.</li>
+        </ul>
+        <p>When comparing the positive and negative classes for the same tweet, the denominator $P(\text{tweet})$ is the same for both. Therefore, we can ignore it and just compare the numerators:
+        $$ \text{classification} \propto P(\text{tweet} | \text{class}) P(\text{class}) $$
+        </p>
+
+        <h3>2.1. The "Naive" Assumption</h3>
+        <p>Calculating the likelihood $P(\text{tweet} | \text{class})$ is difficult. A tweet is a sequence of words, like $(w_1, w_2, ..., w_n)$. The probability of this exact sequence is tiny and hard to model.</p>
+        <p>Here is where the <strong>"naive" assumption</strong> comes in:
+        <blockquote>We assume that every word in the tweet is <strong>conditionally independent</strong> of every other word, given the class (positive or negative).</blockquote>
+        </p>
+        <p>This means that for a positive tweet, the presence of the word "happy" does not make the presence of the word "great" any more or less likely. This is not entirely true in language, but it's a simplifying assumption that works surprisingly well in practice.</p>
+        <p>With this assumption, the likelihood calculation becomes much simpler:
+        $$ P(\text{tweet} | \text{class}) = \prod_{i=1}^{n} P(w_i | \text{class}) $$
+        This means we can just multiply the probabilities of each individual word.</p>
+
+        <h1>3. Training the Naive Bayes Model</h1>
+        <p>Training the model involves calculating two sets of probabilities from the training data: the prior probabilities and the word likelihoods.</p>
+
+        <h3>3.1. Calculating Priors</h3>
+        <p>The prior probability, $P(\text{class})$, is the frequency of each class in the training set.</p>
+        <ul>
+            <li>$P(\text{pos}) = \frac{N_{\text{pos}}}{N_{\text{total}}}$ (Number of positive tweets / Total tweets)</li>
+            <li>$P(\text{neg}) = \frac{N_{\text{neg}}}{N_{\text{total}}}$ (Number of negative tweets / Total tweets)</li>
+        </ul>
+        <img src="./images/corpus-of-tweets.png" alt="Corpus of Tweets">
+
+        <h3>3.2. Calculating Likelihoods with Laplace Smoothing</h3>
+        <p>The likelihood, $P(w | \text{class})$, is the probability of a word appearing given a class. The most direct way to calculate this is by using word frequencies, similar to the method in logistic regression.</p>
+        <p>First, we create a frequency dictionary for all words in our vocabulary, counting their occurrences in positive and negative tweets.</p>
+        <img src="./images/freq-dic-and-count.png" alt="Frequency Dictionary">
+        <p>The likelihood of a word $w$ given a class (e.g., positive) is:
+        $$ P(w | \text{pos}) = \frac{\text{freq}(w, \text{pos})}{\sum_{i=1}^{V} \text{freq}(w_i, \text{pos})} $$
+        Where the denominator is the total count of all words in the positive class.</p>
+        <p><strong>The Zero-Probability Problem</strong>: What if a word from a new tweet never appeared in the positive class during training? Its frequency would be 0, making its likelihood $P(w|\text{pos}) = 0$. Due to the multiplication of probabilities, this one zero would make the entire probability of the tweet being positive equal to zero, regardless of other words.</p>
+        <p><strong>Solution: Laplace (or Additive) Smoothing</strong>. We add a small value, $\alpha$ (usually 1), to the numerator. To keep the probabilities summing to 1, we also add $\alpha \times V$ to the denominator, where $V$ is the number of unique words in our vocabulary.</p>
+        <p>The smoothed formula for the likelihood becomes:
+        $$ P(w | \text{class}) = \frac{\text{freq}(w, \text{class}) + \alpha}{N_{\text{class}} + \alpha \cdot V} $$
+        </p>
+        <ul>
+            <li>$N_{\text{class}}$ is the total count of words in that class.</li>
+            <li>$V$ is the total number of unique words in the vocabulary.</li>
+        </ul>
+
+        <h1>4. Inference: Classifying a New Tweet</h1>
+        <p>To classify a new, unseen tweet, we perform the following steps:</p>
+        <ol>
+            <li>Preprocess the tweet (tokenize, remove stopwords, etc.).</li>
+            <li>For each class (positive and negative), calculate a "score".</li>
+            <li>The class with the higher score wins.</li>
+        </ol>
+        <p>To avoid numerical underflow from multiplying many small probabilities, we will work with the sum of logarithms instead. The classification rule is:
+        $$ \text{classify as pos if } \log P(\text{pos}) + \sum_{i=1}^{n} \log P(w_i | \text{pos}) > \log P(\text{neg}) + \sum_{i=1}^{n} \log P(w_i | \text{neg}) $$
+        </p>
+        <p>The term $\log P(w_i | \text{class})$ is often called the <strong>lambda</strong> or <strong>log-likelihood</strong> of the word. The final score for a class is the sum of the log prior and all the log-likelihoods for the words in the tweet.</p>
+        <img src="./images/words-freqs-impact.png" alt="Words Frequencies Impact">
+        <p>By comparing the final scores, we can effectively determine the most probable sentiment for the tweet.</p>
+
+        <h1>5. Evaluating Naive Bayes</h1>
+        <p>Just like with logistic regression, we need to evaluate our model's performance on a test set. The most common metric is <strong>accuracy</strong>.</p>
+        $$ \text{Accuracy} = \frac{\text{Number of correctly classified tweets}}{\text{Total number of tweets}} $$
+        <p>We can also use a <strong>confusion matrix</strong> to get a more detailed view of our model's performance, showing us where the model is getting confused (e.g., misclassifying negative tweets as positive).</p>
+
+        <h1>6. Pros and Cons of Naive Bayes</h1>
+        <h3>Pros:</h3>
+        <ul>
+            <li><strong>Fast and Simple</strong>: It's computationally efficient and easy to implement.</li>
+            <li><strong>Requires Less Data</strong>: It can perform well even with a small amount of training data.</li>
+            <li><strong>Good with High Dimensions</strong>: It works well for datasets with a large number of features, like text classification where every word is a feature.</li>
+        </ul>
+        <h3>Cons:</h3>
+        <ul>
+            <li><strong>The "Naive" Assumption</strong>: The assumption of conditional independence between features is often violated in the real world.</li>
+            <li><strong>Zero-Frequency Problem</strong>: It can't make a prediction for a word it hasn't seen before without smoothing.</li>
+            <li><strong>Can be Outperformed</strong>: For complex classification tasks, more sophisticated models like Logistic Regression or SVMs often perform better.</li>
+        </ul>
+    </div>
+</body>
+</html>
