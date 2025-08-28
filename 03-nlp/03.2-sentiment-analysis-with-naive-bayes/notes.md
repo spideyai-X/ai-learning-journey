@@ -1,124 +1,109 @@
-My goal in this section is to build a sentiment analysis model using a new classification method: **Naive Bayes**. This technique is particularly useful as it is simple to implement, fast to train, and provides a strong baseline for text classification tasks.
+In this module, i will learn a new method for classification called Naive Bayes.
+Is it really useful because it's easy to train and provide quick baseline for our tasks.
 
-Unlike logistic regression, which finds a separating line between classes, Naive Bayes works by calculating the probability of a tweet belonging to the positive or negative class and then selecting the class with the highest probability.
+# 1. Probability & Baye's rule
 
-# 1. The Foundation: Bayes' Rule
+# 1.1 Conditionnal probabilities
 
-At the heart of this method is Bayes' Rule, which is a way of updating our beliefs based on new evidence. It relies on conditional probabilities.
-
-### 1.1. Conditional Probability
-
-A conditional probability answers the question: "What is the probability of event A happening, *given that* event B has already happened?" This is written as $P(A|B)$.
-
-For example, what is the probability that a tweet is positive, given that it contains the word "happy"? We can visualize this by looking at the intersection of events. The conditional probability reduces our sample space from all tweets to only the tweets containing the word "happy".
-
-![Conditional Probability](./images/probability-intertection.png)
-
-The formula for conditional probability is:
-$$ P(A|B) = \frac{P(A \cap B)}{P(B)} $$
-Where $P(A \cap B)$ is the probability of both A and B happening.
-
-### 1.2. Bayes' Rule
-
-Bayes' Rule is derived from the conditional probability formula and allows us to "flip" the condition:
-$$ P(A|B) = \frac{P(B|A)P(A)}{P(B)} $$
-This is a powerful tool because it's often easier to calculate $P(B|A)$ than $P(A|B)$.
-
-# 2. Naive Bayes for Sentiment Analysis
-
-To classify a tweet, we want to determine if it's more likely to be positive or negative. We can frame this using Bayes' Rule. We want to compare:
-- $P(\text{positive} | \text{tweet})$
-- $P(\text{negative} | \text{tweet})$
-
-Let's focus on the positive case. According to Bayes' Rule:
-$$ P(\text{pos} | \text{tweet}) = \frac{P(\text{tweet} | \text{pos}) P(\text{pos})}{P(\text{tweet})} $$
-
-- $P(\text{pos} | \text{tweet})$ is the **posterior probability**: the probability that the tweet is positive given its content. This is what we want to calculate.
-- $P(\text{tweet} | \text{pos})$ is the **likelihood**: the probability of observing this specific tweet, given that it belongs to the positive class.
-- $P(\text{pos})$ is the **prior probability**: the overall probability of any tweet being positive, based on our training data.
-- $P(\text{tweet})$ is the **marginal probability**: the overall probability of observing this tweet.
-
-When comparing the positive and negative classes for the same tweet, the denominator $P(\text{tweet})$ is the same for both. Therefore, we can ignore it and just compare the numerators:
-$$ \text{classification} \propto P(\text{tweet} | \text{class}) P(\text{class}) $$
-
-### 2.1. The "Naive" Assumption
-
-Calculating the likelihood $P(\text{tweet} | \text{class})$ is difficult. A tweet is a sequence of words, like $(w_1, w_2, ..., w_n)$. The probability of this exact sequence is tiny and hard to model.
-
-Here is where the **"naive" assumption** comes in:
-> We assume that every word in the tweet is **conditionally independent** of every other word, given the class (positive or negative).
-
-This means that for a positive tweet, the presence of the word "happy" does not make the presence of the word "great" any more or less likely. This is not entirely true in language, but it's a simplifying assumption that works surprisingly well in practice.
-
-With this assumption, the likelihood calculation becomes much simpler:
-$$ P(\text{tweet} | \text{class}) = \prod_{i=1}^{n} P(w_i | \text{class}) $$
-This means we can just multiply the probabilities of each individual word.
-
-# 3. Training the Naive Bayes Model
-
-Training the model involves calculating two sets of probabilities from the training data: the prior probabilities and the word likelihoods.
-
-### 3.1. Calculating Priors
-
-The prior probability, $P(\text{class})$, is the frequency of each class in the training set.
-- $P(\text{pos}) = \frac{N_{\text{pos}}}{N_{\text{total}}}$ (Number of positive tweets / Total tweets)
-- $P(\text{neg}) = \frac{N_{\text{neg}}}{N_{\text{total}}}$ (Number of negative tweets / Total tweets)
+Baye's rule is applied on many field including medecin, education, ...  
+Imagine that we want to compute the probability of having a positive tweet on a corpus of tweets.
 
 ![Corpus of Tweets](./images/corpus-of-tweets.png)
 
-### 3.2. Calculating Likelihoods with Laplace Smoothing
+A = Positive tweet, we have to calcul P(A).  
+- P(A) = Npos / N = 13/20 = 0.65 (65%)  
+- P(Negative) = 1-P(Positive) = 0.35 (35%)
 
-The likelihood, $P(w | \text{class})$, is the probability of a word appearing given a class. The most direct way to calculate this is by using word frequencies, similar to the method in logistic regression.
+But, there is a thing we have to care : conditonnal propabilities.  
+Its the way that a word considered as positive, can appears on a negative tweets.  
 
-First, we create a frequency dictionary for all words in our vocabulary, counting their occurrences in positive and negative tweets.
+![Happy negative](./images/happy-negative.png)
 
-![Frequency Dictionary](./images/freq-dic-and-count.png)
+Here, the word happy appears to be positive, but it can appaears on negative tweets.  
+For this, we first have to compute the total number of tweets that contains "happy" as B.
 
-The likelihood of a word $w$ given a class (e.g., positive) is:
-$$ P(w | \text{pos}) = \frac{\text{freq}(w, \text{pos})}{\sum_{i=1}^{V} \text{freq}(w_i, \text{pos})} $$
-Where the denominator is the total count of all words in the positive class.
+P(B) = P(happy) = Nhappy/N
+P(B) = 4 / 20 = 0.2
 
-**The Zero-Probability Problem**: What if a word from a new tweet never appeared in the positive class during training? Its frequency would be 0, making its likelihood $P(w|\text{pos}) = 0$. Due to the multiplication of probabilities, this one zero would make the entire probability of the tweet being positive equal to zero, regardless of other words.
+Another way to looking at it :  
 
-**Solution: Laplace (or Additive) Smoothing**. We add a small value, $\alpha$ (usually 1), to the numerator. To keep the probabilities summing to 1, we also add $\alpha \times V$ to the denominator, where $V$ is the total number of unique words in our vocabulary.
+![Probability intertection](./images/probability-intertection.png)
 
-The smoothed formula for the likelihood becomes:
-$$ P(w | \text{class}) = \frac{\text{freq}(w, \text{class}) + \alpha}{N_{\text{class}} + \alpha \cdot V} $$
-- $N_{\text{class}}$ is the total count of words in that class.
-- $V$ is the total number of unique words in the vocabulary.
+So to compute the probability of 2 events happening : "happy" & "positive", we have to look at the intersection of both : happy n positive = 15%
 
-# 4. Inference: Classifying a New Tweet
+# 2 Bayes' rule 
 
-To classify a new, unseen tweet, we perform the following steps:
-1. Preprocess the tweet (tokenize, remove stopwords, etc.).
-2. For each class (positive and negative), calculate a "score".
-3. The class with the higher score wins.
+In fact, conditionnal probas reduce the sample search space.
+EXAMPLE : we know the word is happy.
 
-To avoid numerical underflow from multiplying many small probabilities, we will work with the sum of logarithms instead. The classification rule is:
-$$ \text{classify as pos if } \log P(\text{pos}) + \sum_{i=1}^{n} \log P(w_i | \text{pos}) > \log P(\text{neg}) + \sum_{i=1}^{n} \log P(w_i | \text{neg}) $$
+Assuming we have : 
+- P(Positive n "happy") as red circle  
+- P("happy") as blue circle
 
-The term $\log P(w_i | \text{class})$ is often called the **lambda** or **log-likelihood** of the word. The final score for a class is the sum of the log prior and all the log-likelihoods for the words in the tweet.
+Then, :
+P(Positive|"happy") = P(Position n "happy") / P("happy)  
+or
+P(X|Y) = P(Y|X)P(X) / P(Y)
 
-![Words Frequencies Impact](./images/words-freqs-impact.png)
+# 3 Naive Bayes model
 
-By comparing the final scores, we can effectively determine the most probable sentiment for the tweet.
+# 3.1 Data prep for naive bayes
 
-# 5. Evaluating Naive Bayes
+The first step is to compute a freq dic like logistic regression.
+With appearance count of Pos & Neg Words
 
-Just like with logistic regression, we need to evaluate our model's performance on a test set. The most common metric is **accuracy**.
+![Freq dic & count](./images/freq-dic-and-count.png)
 
-$$ \text{Accuracy} = \frac{\text{Number of correctly classified tweets}}{\text{Total number of tweets}} $$
 
-We can also use a **confusion matrix** to get a more detailed view of our model's performance, showing us where the model is getting confused (e.g., misclassifying negative tweets as positive).
+# 3.2 Calculating conditional prob
 
-# 6. Pros and Cons of Naive Bayes
+Its allow us to compute the frequency of each words by 
+divide each word appears count by the appearance of all his class, to complete the table ofconditionnal probabilities
 
-### Pros:
-- **Fast and Simple**: It's computationally efficient and easy to implement.
-- **Requires Less Data**: It can perform well even with a small amount of training data.
-- **Good with High Dimensions**: It works well for datasets with a large number of features, like text classification where every word is a feature.
+With class = Pos or Neg.
+If we sum all freq values, we get 1.
 
-### Cons:
-- **The "Naive" Assumption**: The assumption of conditional independence between features is often violated in the real world.
-- **Zero-Frequency Problem**: It can't make a prediction for a word it hasn't seen before without smoothing.
-- **Can be Outperformed**: For complex classification tasks, more sophisticated models like Logistic Regression or SVMs often perform better.
+What is interesting here, its to clearly see which words are most importants on the classification with signficicant difference between Pos & Neg freq of a word.
+
+![Words freq impact](./images/words-freqs-impact.png)
+
+Note : when a word class = 0, their are no way to compare across corpus.
+To avoid this we will smooth our prob function, so we could compute a likelihood score (= an approximative way to classify)
+
+![Inference condition rule](./images/inference-condition-rule.png)
+
+Note : retire the neutral words Freq(Pos/Neg = 1).  
+From here, a score > 1 indicates that the class is positive, either negative.
+
+# 4. Laplacian smoothing
+
+# 4.1
+
+Sometimes, we want to calculate the probabilities for a word to appears after a word. To do that, we logicaly calculate the number of time the words showed up one after another divided by the number of appearance of the first word.
+
+It's what we did on the previous part (smoothing) to avoid a probability of 0.
+
+The expression to calculate a conditionnal probability of a words is : 
+![No smoothing](./images/no-smoothing.png)
+
+With :  
+- Nclass = frequency of all words in class
+- Vclass = number of unique words in class
+- class belongs to {Positive, Negative}
+
+So to avoid prob = 0, we will add 1 on the numerator.  
+However, its add a new term of freq() that is not normalized by Nclass.
+To account for this, we add the Vclass on the denominator. That si the nb of unique words in our vocabulary.
+
+![Laplacian smoothing](./images/laplacian-smoothing.png)
+
+So now all the prob in each column will sum to one.  
+
+This process is called : Laplacian smoothing !
+
+# 4.2
+
+First,  
+Calculate the probabilities of each word in the positive class.  
+There is the calculus :  
+
