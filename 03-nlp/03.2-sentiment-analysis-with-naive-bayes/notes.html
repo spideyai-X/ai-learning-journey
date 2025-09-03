@@ -6,6 +6,11 @@
     <title>Sentiment Analysis with Naive Bayes Notes</title>
 
     <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        .container img { display: block; margin: 16px auto; max-width: 65%; height: auto; }
+        .side-by-side { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: nowrap; }
+        .arrow { font-size: 28px; line-height: 1; }
+    </style>
     
     <link rel="stylesheet" href="../../styles/katex.min.css">
     <script defer src="../../styles/katex.min.js"></script>
@@ -15,10 +20,10 @@
         document.addEventListener("DOMContentLoaded", function() {
             renderMathInElement(document.body, {
                 delimiters: [
-                    {left: '$$', right: '$$', display: true},
-                    {left: '\[', right: '\]', display: true},
-                    {left: '$', right: '$', display: false},
-                    {left: '\\(', right: '\\)', display: false}
+                    { left: '$$', right: '$$', display: true },
+                    { left: '\\[', right: '\\]', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false }
                 ]
             });
         });
@@ -30,49 +35,45 @@
         <p>Unlike logistic regression, which finds a separating line between classes, Naive Bayes works by calculating the probability of a tweet belonging to the positive or negative class and then selecting the class with the highest probability.</p>
 
         <h1>1. The Foundation: Bayes' Rule</h1>
-        <p>At the heart of this method is Bayes' Rule, which is a way of updating our beliefs based on new evidence. It relies on conditional probabilities.</p>
+        <p>At the heart of this method is Bayes' Rule, which updates our belief based on new evidence. It relies on conditional probabilities.</p>
 
         <h3>1.1. Conditional Probability</h3>
-        <p>A conditional probability answers the question: "What is the probability of event A happening, <em>given that</em> event B has already happened?" This is written as $P(A|B)$.</p>
+        <p>A conditional probability answers the question: "What is the probability of event A happening, <em>given that</em> event B has already happened?" This is written as $P(A\mid B)$.</p>
         <p>For example, what is the probability that a tweet is positive, given that it contains the word "happy"? We can visualize this by looking at the intersection of events. The conditional probability reduces our sample space from all tweets to only the tweets containing the word "happy".</p>
         <img src="./images/probability-intertection.png" alt="Conditional Probability">
-        <p>The formula for conditional probability is:
-        $$ P(A|B) = \frac{P(A \cap B)}{P(B)} $$
-        Where $P(A \cap B)$ is the probability of both A and B happening.</p>
+        <p>The formula for conditional probability is:</p>
+        $$ P(A\mid B) = \frac{P(A \cap B)}{P(B)} $$
 
         <h3>1.2. Bayes' Rule</h3>
-        <p>Bayes' Rule is derived from the conditional probability formula and allows us to "flip" the condition:
-        $$ P(A|B) = \frac{P(B|A)P(A)}{P(B)} $$
-        This is a powerful tool because it's often easier to calculate $P(B|A)$ than $P(A|B)$.</p>
+        <p>Bayes' Rule is derived from the conditional probability formula and allows us to "flip" the condition:</p>
+        $$ P(A\mid B) = \frac{P(B\mid A)\,P(A)}{P(B)} $$
+        <p>This is a powerful tool because it's often easier to calculate $P(B\mid A)$ than $P(A\mid B)$.</p>
 
         <h1>2. Naive Bayes for Sentiment Analysis</h1>
         <p>To classify a tweet, we want to determine if it's more likely to be positive or negative. We can frame this using Bayes' Rule. We want to compare:</p>
         <ul>
-            <li>$P(\text{positive} | \text{tweet})$</li>
-            <li>$P(\text{negative} | \text{tweet})$</li>
+            <li>$P(\text{positive} \mid \text{tweet})$</li>
+            <li>$P(\text{negative} \mid \text{tweet})$</li>
         </ul>
-        <p>Let's focus on the positive case. According to Bayes' Rule:
-        $$ P(\text{pos} | \text{tweet}) = \frac{P(\text{tweet} | \text{pos}) P(\text{pos})}{P(\text{tweet})} $$
-        </p>
+        <p>Let's focus on the positive case. According to Bayes' Rule:</p>
+        $$ P(\text{pos} \mid \text{tweet}) = \frac{P(\text{tweet} \mid \text{pos})\, P(\text{pos})}{P(\text{tweet})} $$
         <ul>
-            <li>$P(\text{pos} | \text{tweet})$ is the <strong>posterior probability</strong>: the probability that the tweet is positive given its content. This is what we want to calculate.</li>
-            <li>$P(\text{tweet} | \text{pos})$ is the <strong>likelihood</strong>: the probability of observing this specific tweet, given that it belongs to the positive class.</li>
+            <li>$P(\text{pos} \mid \text{tweet})$ is the <strong>posterior probability</strong>: the probability that the tweet is positive given its content. This is what we want to calculate.</li>
+            <li>$P(\text{tweet} \mid \text{pos})$ is the <strong>likelihood</strong>: the probability of observing this specific tweet, given that it belongs to the positive class.</li>
             <li>$P(\text{pos})$ is the <strong>prior probability</strong>: the overall probability of any tweet being positive, based on our training data.</li>
             <li>$P(\text{tweet})$ is the <strong>marginal probability</strong>: the overall probability of observing this tweet.</li>
         </ul>
-        <p>When comparing the positive and negative classes for the same tweet, the denominator $P(\text{tweet})$ is the same for both. Therefore, we can ignore it and just compare the numerators:
-        $$ \text{classification} \propto P(\text{tweet} | \text{class}) P(\text{class}) $$
-        </p>
+        <p>When comparing the positive and negative classes for the same tweet, the denominator $P(\text{tweet})$ is the same for both. Therefore, we can ignore it and just compare the numerators:</p>
+        $$ \text{classification} \propto P(\text{tweet} \mid \text{class})\, P(\text{class}) $$
 
         <h3>2.1. The "Naive" Assumption</h3>
-        <p>Calculating the likelihood $P(\text{tweet} | \text{class})$ is difficult. A tweet is a sequence of words, like $(w_1, w_2, ..., w_n)$. The probability of this exact sequence is tiny and hard to model.</p>
-        <p>Here is where the <strong>"naive" assumption</strong> comes in:
+        <p>Calculating the likelihood $P(\text{tweet} \mid \text{class})$ is difficult. A tweet is a sequence of words, like $(w_1, w_2, ..., w_n)$. The probability of this exact sequence is tiny and hard to model.</p>
+        <p>Here is where the <strong>"naive" assumption</strong> comes in:</p>
         <blockquote>We assume that every word in the tweet is <strong>conditionally independent</strong> of every other word, given the class (positive or negative).</blockquote>
-        </p>
         <p>This means that for a positive tweet, the presence of the word "happy" does not make the presence of the word "great" any more or less likely. This is not entirely true in language, but it's a simplifying assumption that works surprisingly well in practice.</p>
-        <p>With this assumption, the likelihood calculation becomes much simpler:
-        $$ P(\text{tweet} | \text{class}) = \prod_{i=1}^{n} P(w_i | \text{class}) $$
-        This means we can just multiply the probabilities of each individual word.</p>
+        <p>With this assumption, the likelihood calculation becomes much simpler:</p>
+        $$ P(\text{tweet} \mid \text{class}) = \prod_{i=1}^{n} P(w_i \mid \text{class}) $$
+        <p>This means we can just multiply the probabilities of each individual word.</p>
 
         <h1>3. Training the Naive Bayes Model</h1>
         <p>Training the model involves calculating two sets of probabilities from the training data: the prior probabilities and the word likelihoods.</p>
@@ -80,27 +81,40 @@
         <h3>3.1. Calculating Priors</h3>
         <p>The prior probability, $P(\text{class})$, is the frequency of each class in the training set.</p>
         <ul>
-            <li>$P(\text{pos}) = \frac{N_{\text{pos}}}{N_{\text{total}}}$ (Number of positive tweets / Total tweets)</li>
-            <li>$P(\text{neg}) = \frac{N_{\text{neg}}}{N_{\text{total}}}$ (Number of negative tweets / Total tweets)</li>
+            <li>$P(\text{pos}) = \dfrac{N_{\text{pos}}}{N_{\text{total}}}$ (Number of positive tweets / Total tweets)</li>
+            <li>$P(\text{neg}) = \dfrac{N_{\text{neg}}}{N_{\text{total}}}$ (Number of negative tweets / Total tweets)</li>
         </ul>
         <img src="./images/corpus-of-tweets.png" alt="Corpus of Tweets">
 
-        <h3>3.2. Calculating Likelihoods with Laplace Smoothing</h3>
-        <p>The likelihood, $P(w | \text{class})$, is the probability of a word appearing given a class. The most direct way to calculate this is by using word frequencies, similar to the method in logistic regression.</p>
+        <h3>3.2. Calculating Word Likelihoods</h3>
+        <p>The likelihood, $P(w \mid \text{class})$, is the probability of a word appearing given a class. The most direct way to calculate this is by using word frequencies, similar to the method in logistic regression.</p>
         <p>First, we create a frequency dictionary for all words in our vocabulary, counting their occurrences in positive and negative tweets.</p>
         <img src="./images/freq-dic-and-count.png" alt="Frequency Dictionary">
-        <p>The likelihood of a word $w$ given a class (e.g., positive) is:
-        $$ P(w | \text{pos}) = \frac{\text{freq}(w, \text{pos})}{\sum_{i=1}^{V} \text{freq}(w_i, \text{pos})} $$
-        Where the denominator is the total count of all words in the positive class.</p>
-        <p><strong>The Zero-Probability Problem</strong>: What if a word from a new tweet never appeared in the positive class during training? Its frequency would be 0, making its likelihood $P(w|\text{pos}) = 0$. Due to the multiplication of probabilities, this one zero would make the entire probability of the tweet being positive equal to zero, regardless of other words.</p>
-        <p><strong>Solution: Laplace (or Additive) Smoothing</strong>. We add a small value, $\alpha$ (usually 1), to the numerator. To keep the probabilities summing to 1, we also add $\alpha \times V$ to the denominator, where $V$ is the number of unique words in our vocabulary.</p>
-        <p>The smoothed formula for the likelihood becomes:
-        $$ P(w | \text{class}) = \frac{\text{freq}(w, \text{class}) + \alpha}{N_{\text{class}} + \alpha \cdot V} $$
-        </p>
+
+        <h4>The Problem of Zero Probabilities</h4>
+        <p>A major issue arises when a word in a tweet we want to classify was not present in the training data for a given class. For example, if the word "elated" never appeared in a negative tweet in our training set, its frequency <code>freq("elated", neg)</code> would be 0.</p>
+        <p>When we calculate the conditional probability, this leads to a zero value:</p>
+        <img src="./images/no-smoothing.png" alt="Probability calculation without smoothing">
+        <p>When we calculate the overall score for the tweet by multiplying the probabilities of all its words, this single zero will cause the entire score for that class to become zero. This incorrectly biases our classification and loses valuable information from other words in the tweet.</p>
+
+        <h4>The Solution: Laplacian (Additive) Smoothing</h4>
+        <p>To prevent this, we use <strong>Laplacian smoothing</strong>. The core idea is to add a small smoothing parameter $\alpha$ (usually 1) to the frequency count of each word. This is why it's also called "add-one smoothing" when $\alpha=1$.</p>
+        <p>However, just adding to the numerator would mean the probabilities for a class no longer sum to 1. To re-normalize, we must also adjust the denominator. We add $\alpha \times V$, where $V$ is the total number of unique words in our entire vocabulary.</p>
+        <p>The updated formula for the likelihood becomes:</p>
+        <img src="./images/laplacian-smoothing.png" alt="Laplacian Smoothing Formula">
+        <p>Where:</p>
         <ul>
-            <li>$N_{\text{class}}$ is the total count of words in that class.</li>
-            <li>$V$ is the total number of unique words in the vocabulary.</li>
+            <li><code>freq(w_i, class)</code> is the frequency of word <code>w_i</code> in the given class.</li>
+            <li><code>N_class</code> is the total count of all words in that class.</li>
+            <li><code>V</code> is the total number of unique words in the vocabulary.</li>
         </ul>
+        <p>This ensures that no word will have a zero probability, providing a more robust model.</p>
+
+        <h4>Example Calculation</h4>
+        <p>Let's apply this to our dataset. First, we calculate the smoothed probabilities for each word in the <strong>positive</strong> class:</p>
+        <img src="./images/laplacian-pos-calculus.png" alt="Laplacian Positive Calculus">
+        <p>Next, we do the same for the <strong>negative</strong> class:</p>
+        <img src="./images/laplacian-neg-calculus.png" alt="Laplacian Negative Calculus">
 
         <h1>4. Inference: Classifying a New Tweet</h1>
         <p>To classify a new, unseen tweet, we perform the following steps:</p>
@@ -109,12 +123,49 @@
             <li>For each class (positive and negative), calculate a "score".</li>
             <li>The class with the higher score wins.</li>
         </ol>
-        <p>To avoid numerical underflow from multiplying many small probabilities, we will work with the sum of logarithms instead. The classification rule is:
-        $$ \text{classify as pos if } \log P(\text{pos}) + \sum_{i=1}^{n} \log P(w_i | \text{pos}) > \log P(\text{neg}) + \sum_{i=1}^{n} \log P(w_i | \text{neg}) $$
-        </p>
-        <p>The term $\log P(w_i | \text{class})$ is often called the <strong>lambda</strong> or <strong>log-likelihood</strong> of the word. The final score for a class is the sum of the log prior and all the log-likelihoods for the words in the tweet.</p>
+
+        <h4>The Word Sentiment Ratio</h4>
+        <p>Before building the full classification formula, it's useful to look at the sentiment contribution of individual words. We can do this by calculating the <strong>ratio</strong> of a word's probability in the positive class versus the negative class.</p>
+        <img src="./images/ratio.png" alt="Word Sentiment Ratio Formula">
+        <p>This ratio gives us a single number that represents the sentiment intensity of a word:</p>
+        <ul>
+            <li>A ratio &gt; 1 means the word is more associated with positive tweets.</li>
+            <li>A ratio &lt; 1 means the word is more associated with negative tweets.</li>
+            <li>A ratio = 1 means the word is neutral.</li>
+        </ul>
+        <img src="./images/ratio-tab.png" alt="Table of word sentiment ratios">
+
+        <h4>Full Classification with Log Probabilities</h4>
+        <p>While the ratio is great for interpreting individual words, for classifying a full tweet we use log probabilities to avoid underflow. The classification rule is:</p>
+        $$ \log P(\text{pos}) + \sum_{i=1}^{n} \log P(w_i \mid \text{pos})\;\;\mathop{\gtrless}_{\text{neg}}^{\text{pos}}\;\; \log P(\text{neg}) + \sum_{i=1}^{n} \log P(w_i \mid \text{neg}) $$
+        <p>The term $\log P(w_i \mid \text{class})$ is a word's log-likelihood. The final score for a class is the sum of the log prior and all word log-likelihoods.</p>
         <img src="./images/words-freqs-impact.png" alt="Words Frequencies Impact">
-        <p>By comparing the final scores, we can effectively determine the most probable sentiment for the tweet.</p>
+        <p>By comparing the final scores, we determine the most probable sentiment.</p>
+
+        <h3>4.4. Log-likelihood: visual intuition</h3>
+        <div class="side-by-side">
+            <img src="./images/log-prior.png" alt="Log prior">
+            <span class="arrow">→</span>
+            <img src="./images/log-likelihood.png" alt="Log likelihood">
+        </div>
+
+        <h3>4.5. Lambda (word log-ratio)</h3>
+        <p>We define the word contribution as the log-ratio:</p>
+        $$ \lambda(w) = \log \frac{P(w \mid pos)}{P(w \mid neg)} = \log P(w \mid pos) - \log P(w \mid neg) $$
+        <p>Tweet score is the sum over words:</p>
+        $$ \Lambda(\text{tweet}) = \sum_{i=1}^n \lambda(w_i) $$
+
+        <h3>4.6. Log-likelihood decision rule</h3>
+        <p>Decision rule using the tweet score:</p>
+        <ul>
+            <li>If $\Lambda(\text{tweet}) &gt; 0$ → predict positive</li>
+            <li>If $\Lambda(\text{tweet}) &lt; 0$ → predict negative</li>
+            <li>If $\Lambda(\text{tweet}) = 0$ → tie/neutral</li>
+        </ul>
+
+        <h3>4.7. Recap</h3>
+        <p>With Naive Bayes + logs, the threshold is 0. We measure sentiment by the log-likelihood ratio (sum of word lambdas). A positive total favors positive; a negative total favors negative.</p>
+        <img src="./images/pos-neg-sentiment.png" alt="Pos/Neg sentiment">
 
         <h1>5. Evaluating Naive Bayes</h1>
         <p>Just like with logistic regression, we need to evaluate our model's performance on a test set. The most common metric is <strong>accuracy</strong>.</p>
