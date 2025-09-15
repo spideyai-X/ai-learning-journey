@@ -32,7 +32,5 @@ The content of this repository is licensed under the terms of the [LICENSE](./LI
 ---
 
 <div align="center">
-  Made with ❤ by <a href="https://github.com/spideystreet">spidey</a>
+  Made with ❤ by <a href="https://github.com/spideystreet">spidey</a>, your friendly friend
   <br/>
-  <a href="https://github.com/spideystreet">https://github.com/spideystreet</a>
-</div>
