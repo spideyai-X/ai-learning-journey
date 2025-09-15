@@ -1,6 +1,7 @@
 <div align="center">
   <img src="assets/ai-learning-journey.png" alt="AI learning journey banner" width="100%"/>
 </div>
+</br>
 
 Confession; I'm not the most motivated student, so I built this repo to force myself to show up regularly—notes, visuals, and small wins, one commit at a time. Join me as I explore, experiment, and build! :)
 
