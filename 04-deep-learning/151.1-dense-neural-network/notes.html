@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dense Neural Network - Notes</title>
+
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <style>
+        .container img { display: block; margin: 16px auto; max-width: 65%; height: auto; }
+        .side-by-side { display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:nowrap; }
+    </style>
+
+    <link rel="stylesheet" href="../../../styles/katex.min.css">
+    <script defer src="../../../styles/katex.min.js"></script>
+    <script defer src="../../../styles/auto-render.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}
+                ]
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h3>Introduction</h3>
+
+        <h2>DL vs ML</h2>
+        <p>Deep learning is an evolution of traditional Machine Learning. The more high-quality data we have, the better deep learning algorithms will perform. This is not always the case for traditional ML, which can stagnate after a certain level.</p>
+        <p>Deep learning is based on Artificial Neural Networks (ANN), inspired by how the human brain works.</p>
+        <p><strong>ML</strong>: Linear regression / Decision trees<br><strong>DL</strong>: Artificial Neural Networks (ANN)</p>
+        <p>ANNs can capture deeper patterns than traditional ML. Deep learning uses multiple layers; the more layers, the deeper the learned representation — hence the name "Deep Learning".</p>
+        <img src="./images/deep-learning-vs-others.png" alt="Deep Learning vs Others">
+        <p>Deep learning typically requires significant compute power.</p>
+
+        <h2>Perceptron</h2>
+        <p>Neural networks are built from layers. Each layer takes inputs and applies parameters to produce outputs.</p>
+        <p>A single neuron (perceptron) has: a weight vector $w$, a bias $b$, and an activation function $f$.</p>
+        <p>Dot product: $$ w^\top x \,=\, \sum_{j=1}^{n} w_j x_j $$</p>
+        <p>Perceptron output for an input $x$: $$ h \,=\, f(w^\top x + b) $$</p>
+        <img src="./images/schema-perceptron.png" alt="Perceptron schema">
+        <p>The perceptron is a linear model, most effective when data can be linearly separated.</p>
+
+        <h2>Dot product</h2>
+        <p>For a point $x = (x_1, x_2)$ and a vector $w = (w_1, w_2)$:</p>
+        <ul>
+            <li>If $w^\top x &gt; 0$ → class 1</li>
+            <li>If $w^\top x &lt; 0$ → class 0</li>
+        </ul>
+        <p>The decision boundary is $w^\top x = 0$, separating positive from negative.</p>
+        <img src="./images/dot-product.png" alt="Dot product">
+
+        <h2>Linear separability</h2>
+        <p>To use dot products for classification, linear separability matters. Example: the Iris dataset using Sepal Width and Sepal Length.</p>
+        <p>Goal: find a decision boundary to separate species (Green: Iris setosa, Orange: Iris virginica).</p>
+        <img src="./images/iris-dataset-decision-boundary.png" alt="Iris Decision Boundary">
+        <p>Separating hyperplane: $$ \{ x \in \mathbb{R}^2 : \langle x, w \rangle = x_1 w_1 + x_2 w_2 = 0 \} $$</p>
+
+        <h2>Loss function</h2>
+        <p>We count classification errors for a given $w$.</p>
+        <p>Given $n$ points $X = (x_i)_{i=1,\dots,n} \in \mathbb{R}^d$ and labels $Y = (y_i)_{i=1,\dots,n} \in \{0,1\}$.</p>
+        <p>Classifier: $$ f(x_i, w) = \mathbf{1}[\langle x_i, w \rangle \ge 0] $$</p>
+        <p>Empirical 0/1 loss: $$ g(w,X,Y) = \sum_{i=1}^{n} \mathbf{1}[ f(x_i, w) \ne y_i ] $$</p>
+        <p>We minimize this loss to find the best separating hyperplane.</p>
+        <img src="./images/tensorflow-keras-lossfunctions.png" alt="Loss functions list">
+        <div class="side-by-side">
+            <img src="./images/iris-loss-functions-schemas.png" alt="Iris loss functions" style="max-width:45%; height:auto;">
+            <img src="./images/iris-loss-functions-schemas-2.png" alt="Iris loss functions 2" style="max-width:45%; height:auto;">
+        </div>
+
+        <h2>Activation function</h2>
+        <p>Activation functions enable differentiable loss and appropriate outputs.</p>
+        <ul>
+            <li>Sigmoid</li>
+            <li>Tanh</li>
+            <li>ReLU (Rectified Linear Unit)</li>
+            <li>Leaky ReLU</li>
+        </ul>
+        <p>Hidden layers: often ReLU / Leaky ReLU.</p>
+        <p>Output layer depends on task: binary → Sigmoid; multiclass → Softmax; regression → Linear.</p>
+        <img src="./images/activation-functions.png" alt="Activation functions">
+
+        <h2>Gradient descent</h2>
+        <p>With differentiable activations, we can use gradient descent to optimize $w$.</p>
+        <p>Example: if $f(x)=x^2$, then $f'(x)=2x$.</p>
+        <div class="side-by-side">
+            <img src="./images/gradient-descent-start.png" alt="Gradient Descent start" style="max-width:45%; height:auto;">
+            <img src="./images/gradient-descent-xmin.png" alt="Gradient Descent xmin" style="max-width:45%; height:auto;">
+        </div>
+        <p>Learning rate $\\lambda$ controls step size. Iterate until $|f'(x_k)| &lt; {tol}$.</p>
+        <p>Update rule: $$ x_{k+1} = x_k - \lambda f'(x_k) $$</p>
+        <img src="./images/convex-gradient-descent.png" alt="Convex Gradient Descent">
+        <p>Limitations: guarantees a global minimum only for convex functions. In DL, loss is non-convex; gradient methods often reach a local minimum.</p>
+        <p>Therefore, the learning rate is a critical hyperparameter for DL model performance.</p>
+    </div>
+</body>
+</html>
