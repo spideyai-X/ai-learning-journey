@@ -13,7 +13,7 @@ This repository documents my progress through the different fields of AI.
 - [Sentiment Analysis with Naive Bayes](https://spideystreet.github.io/ai-learning-journey/03-nlp/03.2-sentiment-analysis-with-naive-bayes/notes.html)  
 
 ***[WIP]*** **Deep Learning** : 
-- [Deep Learning: Dense neural network](https://spideystreet.github.io/ai-learning-journey/151.1-dense-neural-network.html).
+- [Deep Learning: Dense neural network](https://spideystreet.github.io/ai-learning-journey/04-deep-learning/151.1-dense-neural-network.html)
 
 *(More modules will be added as I progress.)*
 
