@@ -20,8 +20,7 @@ You can find research papers i read and sometimes took notes on: [Papers](papers
 
 ## Connect with Me
 
-**𝕏**: [@spideystreet](https://x.com/spideystreet)  
-**LinkedIn**: [@Hicham](https://www.linkedin.com/in/hicham-djebali/)
+<a href="https://x.com/spideystreet" target="_blank"><img src="https://img.shields.io/badge/@spideystreet-000000?style=flat&logo=x&logoColor=white" alt="X: @spideystreet"> <a href="https://www.linkedin.com/in/hicham-djebali/" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-Hicham-0A66C2?style=flat&logo=linkedin&logoColor=white" alt="LinkedIn: Hicham"></a>
 
 ## License
 

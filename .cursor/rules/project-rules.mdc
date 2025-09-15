@@ -2,81 +2,15 @@
 alwaysApply: true
 ---
 
-# AI Learning Journey – Cursor Rules
+# AI Learning Journey – Cursor Rules (Umbrella)
 
-## Project context
-- This repo hosts academic learning notes (see `README.md`).
-- Notes are authored in Markdown and also rendered to HTML for GitHub Pages at: `https://spideystreet.github.io/ai-learning-journey/`.
+Use these split rules for authoritative guidance:
 
-## Content workflow
-1. Write/maintain notes in Markdown.
-2. Generate matching HTML for each note so it renders properly on GitHub Pages.
-3. Keep the Markdown and HTML pairs in the same module folder (e.g., `03-nlp/...`, `04-deep-learning/...`).
+- `content-workflow.mdc` – project context, structure, workflow, and editing discipline
+- `formatting-and-math.mdc` – HTML/CSS styles, imagery, and LaTeX math conventions
+- `environment-and-changelog.mdc` – environment/lock files and changelog/commit hygiene
 
-## Formatting & styles (HTML)
-- Always respect shared styles in `styles/` (typography, layout, KaTeX setup).
-- Use centered images and side‑by‑side blocks (utility classes are defined in CSS when needed).
-- Keep headings readable and consistent (Instrument Serif for headings, Inter Tight for body as configured in CSS).
-
-## Mathematics
-- Use LaTeX for all mathematical notation.
-- Prefer inline math: `$ ... $` and display math: `$$ ... $$` (KaTeX is initialized in notes HTML).
-- Avoid rendering math as code (no grey inline code for formulas).
-
-## Sources & references
-- Academic papers live under `papers/`. Reference or link them from notes as needed.
-
-## Versioning & changelog
-- Maintain a concise changelog in `CHANGELOG.md` for notable content/formatting updates.
-- When feasible, group related edits into one clear commit with a descriptive message.
-
-## Environment & tooling
-- Respect environment metadata and locks: `uv.lock`, `package.json`, `package-lock.json`.
-- Do not introduce tooling changes without necessity; verify compatibility before updating.
-
-## Editing rules
-- Be concise and verify information before modifying content.
-- Preserve existing indentation/structure; do not reflow unrelated sections.
-- When adding visuals, ensure sizes are consistent and accessible (alt text required).
-- Keep Markdown as the source of truth; HTML is the rendered companion.
-
-
-# AI Learning Journey – Cursor Rules
-
-## Project context
-- This repo hosts academic learning notes (see `README.md`).
-- Notes are authored in Markdown and also rendered to HTML for GitHub Pages at: `https://spideystreet.github.io/ai-learning-journey/`.
-
-## Content workflow
-1. Write/maintain notes in Markdown.
-2. Generate matching HTML for each note so it renders properly on GitHub Pages.
-3. Keep the Markdown and HTML pairs in the same module folder (e.g., `03-nlp/...`, `04-deep-learning/...`).
-
-## Formatting & styles (HTML)
-- Always respect shared styles in `styles/` (typography, layout, KaTeX setup).
-- Use centered images and side‑by‑side blocks (utility classes are defined in CSS when needed).
-- Keep headings readable and consistent (Instrument Serif for headings, Inter Tight for body as configured in CSS).
-
-## Mathematics
-- Use LaTeX for all mathematical notation.
-- Prefer inline math: `$ ... $` and display math: `$$ ... $$` (KaTeX is initialized in notes HTML).
-- Avoid rendering math as code (no grey inline code for formulas).
-
-## Sources & references
-- Academic papers live under `papers/`. Reference or link them from notes as needed.
-
-## Versioning & changelog
-- Maintain a concise changelog in `CHANGELOG.md` for notable content/formatting updates.
-- When feasible, group related edits into one clear commit with a descriptive message.
-
-## Environment & tooling
-- Respect environment metadata and locks: `uv.lock`, `package.json`, `package-lock.json`.
-- Do not introduce tooling changes without necessity; verify compatibility before updating.
-
-## Editing rules
-- Be concise and verify information before modifying content.
-- Preserve existing indentation/structure; do not reflow unrelated sections.
-- When adding visuals, ensure sizes are consistent and accessible (alt text required).
-- Keep Markdown as the source of truth; HTML is the rendered companion.
-
-
+Principles to remember (summary):
+- Markdown is the source of truth; generate matching HTML for GitHub Pages.
+- Respect shared styles in `styles/`; use LaTeX for all math (no code‑styled formulas).
+- Keep edits concise, verified, and minimally invasive. Maintain `CHANGELOG.md`.
