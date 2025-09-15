@@ -1,7 +1,10 @@
-# AI Learning Journey
+<div align="center">
+  <img src="assets/ai-learning-journey.png" alt="AI learning journey banner" width="100%"/>
+</div>
 
-Welcome to my AI Learning Journey. This repository documents my progress through the different domains of Artificial Intelligence, from foundational concepts in Machine Learning.  
-Im actually learning the complexities of Natural Language Processing (NLP) and beyond. Join me as I explore, experiment, and build! :)
+Confession; I'm not the most motivated student, so I built this repo to force myself to show up regularly—notes, visuals, and small wins, one commit at a time. Join me as I explore, experiment, and build! :)
+
+This repository documents my progress through the different fields of AI.
 
 ## Learning Modules
 
@@ -25,3 +28,11 @@ You can find research papers i read and sometimes took notes on: [Papers](papers
 ## License
 
 The content of this repository is licensed under the terms of the [LICENSE](./LICENSE) file.
+
+---
+
+<div align="center">
+  Made with ❤ by <a href="https://github.com/spideystreet">spidey</a>
+  <br/>
+  <a href="https://github.com/spideystreet">https://github.com/spideystreet</a>
+</div>

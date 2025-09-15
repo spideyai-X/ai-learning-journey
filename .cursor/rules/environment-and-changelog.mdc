@@ -12,4 +12,6 @@ alwaysApply: true
 
 - Update CHANGELOG.md concisely for notable changes.
 - Group related edits into one clear commit with descriptive message.
+- Commit messages must be concise.
+- When a commit includes course notes (Markdown/HTML in modules), the message should describe only the learning content added/updated (what topics/sections were introduced or clarified) and avoid mentioning unrelated housekeeping.
 
