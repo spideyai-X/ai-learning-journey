@@ -1,0 +1,19 @@
+---
+alwaysApply: true
+---
+
+# Content Workflow & Structure
+
+## Sources of truth
+- Notes are written in Markdown and mirrored to HTML for GitHub Pages (https://spideystreet.github.io/ai-learning-journey/).
+- Keep Markdown and HTML pairs in the same module folder (e.g., 03-nlp/..., 04-deep-learning/...).
+
+## Editing discipline
+- Be concise and verify information before modifying content.
+- Preserve indentation/structure; do not reflow unrelated sections.
+- When adding visuals, use accessible sizes and meaningful alt text.
+
+## Versioning
+- Maintain a concise CHANGELOG.md for notable content/formatting updates.
+- Prefer grouped, descriptive commits.
+

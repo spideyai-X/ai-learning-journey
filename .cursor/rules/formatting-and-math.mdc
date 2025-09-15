@@ -1,0 +1,18 @@
+---
+alwaysApply: true
+---
+
+# Formatting, Styles & Math
+
+## HTML & CSS
+- Respect shared styles under styles/ (typography, layout, KaTeX setup).
+- Use centered images; pair complementary visuals side‑by‑side when useful.
+- Headings: Instrument Serif. Body: Inter Tight (as configured).
+
+## Mathematics
+- Use LaTeX for all math: inline $...$ and display 56717...56717.
+- Do not render formulas as code (avoid grey inline code for math).
+
+## Sources & references
+- Academic papers live under papers/. Link or cite from notes when relevant.
+

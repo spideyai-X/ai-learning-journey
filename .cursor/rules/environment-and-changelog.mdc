@@ -1,0 +1,15 @@
+---
+alwaysApply: true
+---
+
+# Environment & Tooling
+
+- Respect environment/lock files: uv.lock, package.json, package-lock.json.
+- Do not change tooling unless necessary; verify compatibility first.
+- Keep Markdown as the source of truth; HTML is the rendered companion for Pages.
+
+# Changelog & Commit Hygiene
+
+- Update CHANGELOG.md concisely for notable changes.
+- Group related edits into one clear commit with descriptive message.
+
