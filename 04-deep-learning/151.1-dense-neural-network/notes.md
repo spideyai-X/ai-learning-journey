@@ -154,6 +154,95 @@ In DL, the loss is non-convex; gradient methods often reach a local minimum.
 
 Therefore, the learning rate is a critical hyperparameter for DL model performance. Finding a good learning rate is a key challenge.
 
+### Predictions with neural networks on tabular data
+
+## Context
+
+We will train a multilayer perceptron on the Iris dataset (3 species). The goal is to classify the species from tabular features.  
+
+## Multilayer perceptron (MLP)
+
+An MLP is a sequence of layers where each layer’s input is the previous layer’s output. For three layers and input \(x\):
+\[ H_1 = \text{Layer}_1(x),\quad H_2 = \text{Layer}_2(H_1),\quad O = \text{Layer}_3(H_2). \]
+
+<div style="text-align:center;">
+  <img src="./images/layers-density.png" alt="Layers density" style="max-width:65%; height:auto;"/>
+</div>
+
+Two common API styles:
+- Sequential: linear stack of layers (simple networks)
+- Functional: flexible graphs (multiple inputs/outputs, merges)
+
+## Training pipeline
+
+1) Architecture definition  
+- Choose the number of layers and neurons  
+- Define the forward flow of data
+
+2) Compilation  
+- Loss function to minimize  
+- Metrics to monitor  
+- Optimizer that updates weights (e.g., Adam)
+
+Example:
+```python
+model.compile(
+    loss="name_loss_function",
+    optimizer="name_optimizer",
+    metrics=["name_metric"],
+)
+```
+
+3) Training  
+Use `fit` to apply optimizer and loss across epochs:
+```python
+model.fit(
+    X_train, y_train,
+    validation_split=p,
+    epochs=nb_epochs,
+    batch_size=batch_size,
+)
+```
+
+Key notions:  
+- `batch_size`: samples per gradient update  
+- Batch loop: batch → model → prediction → loss → weight update  
+- `epochs`: full passes over the training set (too high → overfit; too low → underfit)
+
+<div style="text-align:center;">
+  <img src="./images/batch-size-illustration.png" alt="Batch size illustration" style="max-width:65%; height:auto;"/>
+</div>
+
+`validation_split` holds out a portion of training data for validation; evaluation runs at the end of each epoch.
+
+## Sequential model with Keras
+
+Step 1 – imports  
+```python
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+```
+
+Step 2 – initialize  
+```python
+model = Sequential()
+```
+
+Step 3 – add layers  
+```python
+model.add(Dense(units=64, activation="relu", input_shape=(784,)))
+model.add(Dense(units=10, activation="softmax"))
+```
+
+Step 4 – train  
+```python
+model.fit(X, y, epochs=nb_epochs, batch_size=batch_size, validation_split=p)
+```
+
+## Model performance
+
+To diagnose, compute a confusion matrix on the test set. `predict` returns probabilities; convert to class IDs with NumPy `argmax` for scikit‑learn reports.  
+For multi‑class classification, a common loss is `sparse_categorical_crossentropy`.
 
 
 
@@ -163,6 +252,4 @@ Therefore, the learning rate is a critical hyperparameter for DL model performan
 
 
 
-
-  
 

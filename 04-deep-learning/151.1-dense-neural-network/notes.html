@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dense Neural Network - Notes</title>
 
-    <link rel="stylesheet" href="../../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/main.css">
     <style>
-        .container img { display: block; margin: 16px auto; max-width: 65%; height: auto; }
-        .side-by-side { display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:nowrap; }
+        /* Intentionally left minimal — all styles centralized in styles/main.css */
     </style>
 
-    <link rel="stylesheet" href="../../../styles/katex.min.css">
-    <script defer src="../../../styles/katex.min.js"></script>
-    <script defer src="../../../styles/auto-render.min.js"></script>
+    <link rel="stylesheet" href="../../styles/katex.min.css">
+    <script defer src="../../styles/katex.min.js"></script>
+    <script defer src="../../styles/auto-render.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             renderMathInElement(document.body, {
@@ -98,6 +97,60 @@
         <img src="./images/convex-gradient-descent.png" alt="Convex Gradient Descent">
         <p>Limitations: guarantees a global minimum only for convex functions. In DL, loss is non-convex; gradient methods often reach a local minimum.</p>
         <p>Therefore, the learning rate is a critical hyperparameter for DL model performance.</p>
+
+        <h3>Predictions with neural networks on tabular data</h3>
+
+        <h2>Context</h2>
+        <p>We will train a multilayer perceptron on the Iris dataset (3 species). The goal is to classify the species from tabular features.</p>
+
+        <h2>Multilayer perceptron (MLP)</h2>
+        <p>An MLP is a sequence of layers where each layer’s input is the previous layer’s output. For three layers and input $x$:</p>
+        <p>$$ H_1 = \text{Layer}_1(x),\quad H_2 = \text{Layer}_2(H_1),\quad O = \text{Layer}_3(H_2). $$</p>
+        <img src="./images/layers-density.png" alt="Layers density">
+        <p>API styles:</p>
+        <ul>
+            <li><strong>Sequential</strong>: linear stack of layers (simple networks)</li>
+            <li><strong>Functional</strong>: flexible graphs (multiple inputs/outputs, merges)</li>
+        </ul>
+
+        <h2>Training pipeline</h2>
+        <ol>
+            <li><strong>Architecture definition</strong>: choose number of layers/neurons and data flow</li>
+            <li><strong>Compilation</strong>: loss, metrics, optimizer (e.g., Adam)</li>
+        </ol>
+        <pre><code class="language-python">model.compile(
+    loss="name_loss_function",
+    optimizer="name_optimizer",
+    metrics=["name_metric"],
+)
+        </code></pre>
+        <ol start="3">
+            <li><strong>Training</strong>: run fit across epochs</li>
+        </ol>
+        <pre><code class="language-python">model.fit(
+    X_train, y_train,
+    validation_split=p,
+    epochs=nb_epochs,
+    batch_size=batch_size,
+)
+        </code></pre>
+        <p><strong>Key notions</strong>: <code>batch_size</code> (samples per update); batch → model → prediction → loss → weight update; <code>epochs</code> (full passes over data).</p>
+        <img src="./images/batch-size-illustration.png" alt="Batch size illustration">
+        <p><code>validation_split</code> holds out a portion of training data; evaluation runs at each epoch end.</p>
+
+        <h2>Sequential model with Keras</h2>
+        <pre><code class="language-python">from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+
+model = Sequential()
+model.add(Dense(units=64, activation="relu", input_shape=(784,)))
+model.add(Dense(units=10, activation="softmax"))
+
+model.fit(X, y, epochs=nb_epochs, batch_size=batch_size, validation_split=p)
+        </code></pre>
+
+        <h2>Model performance</h2>
+        <p>Use a confusion matrix on the test set. Convert probabilities to class IDs with NumPy <code>argmax</code> for scikit‑learn reports. For multi‑class tasks, a common loss is <code>sparse_categorical_crossentropy</code>.</p>
     </div>
 </body>
 </html>
