@@ -33,5 +33,5 @@ The content of this repository is licensed under the terms of the [LICENSE](./LI
 ---
 
 <div align="center">
-  Made with ❤ by <a href="https://github.com/spideystreet">spidey</a>, your friendly friend
+  Made with ❤ by <a href="https://github.com/aispidey">spidey</a>, your friendly friend
   <br/>
