@@ -58,7 +58,7 @@ Extremely active online community & developed tools (focused on analytics)
 
 Here is the OMOP data models (mostly relational):  
 
-![OMOP Model](./images/omop-model.png)  
+![OMOP Model](./images/omop-model-clean.png)  
 
 The multiple hierarchy and country terms are not really a problem.  
 
@@ -74,4 +74,44 @@ Some links related to OMOP & OHDSI
 - CDM URL : https://ohdsi.github.io/CommonDataModel/  
 - ATLAS (OMOP analytics tool) : http://www.ohdsi.org/web/atlas/
 
+## Deep dive into OMOP data model
+
+We can found DDLs togenerate the model here : [OHDSI-CDM Github](https://github.com/OHDSI/CommonDataModel)  
+They are Definitions and DDLs for the OMOP Common Data Model (CDM)  
+
+DDL are multiple SQL lines which can build the standard tables of OMOP model.  
+
+### OMOP Model & defs
+
+![OMOP V5.0](./images/omop-model-clean.png)
+
+- Blue part focus on store clinical datas  
+- Green parts are focusing on storing class datas  
+- Orange part focus on therminologies  
+
+### Conceptual view  
+
+There is 2 side of the OMOP Model.  
+The 'source' and 'standard' ones.  
+
+**Source** : We put anything into this side of the model  
+- Any field that begins with 'source' like 'source_value', 'source_concept_id'
+- Used to keep original data values before standardization 
+- Can be usedfor local queries usinglocal terms  
+
+**Standard** : Need to follow the standards set by OHDSI community  
+- Any field that begins with 'concept'  
+- All OHDSI tools & international queries use only this part of the model  
+
+### Mapping
+
+All source terms must be mapped to standard terms.  
+The power of using mapping is that multi source can map their terms into one, single common standard term understood by the community.  
+
+![OMOP mapping](./images/omop-mapping.png)
+
+
+
+![Hierarchy](./images/omop-disease-hierarchy.png) 
+![Terminologies](./images/omop-concept-hierarchy.png)
 
