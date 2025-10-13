@@ -115,3 +115,29 @@ The power of using mapping is that multi source can map their terms into one, si
 ![Hierarchy](./images/omop-disease-hierarchy.png) 
 ![Terminologies](./images/omop-concept-hierarchy.png)
 
+All terms of these models, are normalisation for all existent diseases.
+
+### Medical hierarchies  
+
+The power of medical terminologies hierarchy is shown here.  
+
+![Medical hierarchy](./images/medical-terminologies-hierarchy.png)  
+
+The exemple got 2 differents hierarchy.
+- Indication : combine multiple medications by a common indication
+- Drug class : combine multiple medications by a common mechanism of action  
+
+### Worldwide terminology  
+
+The standard medication terminology used by OMOP is called RxNorm.  
+It is an open-source terminology provided by the National Library of Medicine of USA.  
+
+![RxNorm](./images/rxnorm-terminologies.png)  
+
+OMOP contain a large amount of medication hierarchy  
+For our example we will use the NDFRT one on our queries  
+
+NFDRT : National Drug File Reference Terminology  
+
+It is an open-source drug terminlogy that provide multiple medication hierarchies  
+In OMOP, it organize medication related to diseases they are used to treat
