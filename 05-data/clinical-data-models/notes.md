@@ -140,4 +140,22 @@ For our example we will use the NDFRT one on our queries
 NFDRT : National Drug File Reference Terminology  
 
 It is an open-source drug terminlogy that provide multiple medication hierarchies  
-In OMOP, it organize medication related to diseases they are used to treat
+In OMOP, it organize medication related to diseases they are used to treat.  
+
+### Benefit to use OMOP standard  
+
+OMOP maintains mappings from non-standard to standard concepts  
+Eg: ICD10-CM to SNOMED-CT  
+
+OMOP use a classification concept, OMOP "fills in" the underlying concepts
+New concepts added : classification automaticly included  
+More than one hierarchy allowed
+
+### Resuming  
+
+SOURCE_VALUE : stores original values  
+- useful for debugging, zero loss
+CONCEPT_IDs : stores OMOP defined standard value  
+- Harmonization local<->network  
+Hierarchies : OMOP defined standard values  
+- Allows standardized queries 
