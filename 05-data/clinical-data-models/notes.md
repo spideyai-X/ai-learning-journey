@@ -145,9 +145,9 @@ Key concepts:
 
 OMOP uses broad, standardized table and field names so it can generalize across many health systems worldwide. A few examples:
 
-- `VISIT_OCCURRENCE` = encounters/admissions/visits
+- `VISIT_OCCURRENCE` = encounters/admissions/visits (table spec: https://ohdsi.github.io/CommonDataModel/cdm54.html#visit_occurrence)
 - `CONDITION_OCCURRENCE` = diagnoses/conditions (table spec: https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence)
-- `DRUG_EXPOSURE` = medication prescribing/dispensing/administration (depending on the source)
+- `DRUG_EXPOSURE` = medication prescribing/dispensing/administration (depending on the source) (table spec: https://ohdsi.github.io/CommonDataModel/cdm54.html#drug_exposure)
 
 These umbrella names intentionally cover many similar events (e.g., external consults, urgent care, inpatient stays) under a single “visit” construct. The same idea applies to other domains.
 
