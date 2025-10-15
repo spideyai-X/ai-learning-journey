@@ -9,12 +9,19 @@ This repository documents my progress through the different fields of AI.
 
 ## Learning Modules
 
+### AI
+
 ***[WIP]*** **Natural Language Processing** : 
 - [Sentiment Analysis with Logistic Regression](https://spideyai-X.github.io/ai-learning-journey/03-nlp/03.1-sentiment-analysis-with-logitic-regression/notes.html)  
 - [Sentiment Analysis with Naive Bayes](https://spideyai-X.github.io/ai-learning-journey/03-nlp/03.2-sentiment-analysis-with-naive-bayes/notes.html)  
 
 ***[WIP]*** **Deep Learning** : 
 - [Deep Learning: Dense neural network](https://spideyai-X.github.io/ai-learning-journey/04-deep-learning/151.1-dense-neural-network/notes.html)
+
+### DSA  
+
+***[START]*** **OMOP Data model for healthcare** :  
+- [OMOP](https://spideyai-X.github.io/ai-learning-journey/05-data/clinical-data-models/notes.html)
 
 *(More modules will be added as I progress.)*
 
