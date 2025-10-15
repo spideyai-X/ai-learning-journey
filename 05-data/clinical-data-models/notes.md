@@ -1,161 +1,131 @@
-The new field of personalized medecine divide patients category into finer and finer categories, which is called clinical finatypes for personal diagnostic.
+Personalized medicine divides patients into increasingly fine categories—clinical phenotypes—to enable tailored diagnosis and treatment.
 
 ![Finer types](./images/finer-types.png)
 
-## Common data models 
+## Common data models
 
-CDM are built to normalize and make bigger databases across institutions to study some specifics diseases, tretement, etc...
+Common Data Models (CDMs) standardize healthcare data so multiple institutions can combine and analyze it for research on specific diseases, treatments, outcomes, and more.
 
 ![Common data models](./images/common-data-models.png)
 
-Because all systems are built differently, so the querying and datas are different and means different things
-
-A same data can be spelled differently across the same organizations and even between all world's organizations. So it was difficult to get all these datas to the same point.
+Healthcare systems store and label data differently. The same concept can be named in different ways even within a single organization, and certainly across countries. Without standardization, queries are inconsistent and data integration is hard.
 
 ![Diff orga terms](./images/diff-orga-terms.png)
 
-That's why for this we used to make common data models, we specify a single location for the same datas can be stored, even across organizations  
+CDMs define common structures and fields so the same kinds of data live in the same place, regardless of source system.
 
 ![Common data models details](./images/common-data-models-details.png)
 
-Here, a list of most deployed common data models (open-source) for research:  
-- i2b2: Harvard Univ  
-- OMOP : OHDSI Consortium  
-- Sentinel: USA FDA  
-- PCORnet: Patient centered outcomes research institute  
+Widely used open-source research CDMs include:
+- i2b2 (Harvard University)
+- OMOP (by the OHDSI Consortium)
+- Sentinel (U.S. FDA)
+- PCORnet (Patient-Centered Outcomes Research Institute)
 
-It's good to precise here that it dont exist a single top 1 data models, all models have strenght and weakneasses, depending on how data are stored, asked, etc...  
+There is no single “best” CDM—each has strengths and trade-offs depending on your use case, data shape, and query patterns.
 
 ## OMOP
 
-OMOP is the model that is the most interesting for us because its the one which i work on, so i will study it.
+OMOP is the CDM I focus on here because I work with it regularly. It has an active community and solid documentation.
 
-OMOP have an extremely engaged and active user community and the documentation is well present.
+OMOP = Observational Medical Outcomes Partnership.
 
-OMOP = Observational Medical Outcomes Partnership  
-
-OMOP is managed by OHDSI community = Observational Health Data sciences and informatics  , @ Columbia University in New York
+It is governed by the OHDSI community (Observational Health Data Sciences and Informatics) at Columbia University, New York.
 
 ### History
 
-It was Started in 2008, by the US Food and Drug Administration (UFDA) in a goal of drug surveillance/adverse event detection.  
+• 2008: initiated by the U.S. Food and Drug Administration (FDA) for drug safety surveillance and adverse event detection.
 
-In 2014, it moved to OHDSI & the name was changed for OMOP.
-It expanded to broad clinical researh and real world evidence generation.  
+• 2014: transitioned to OHDSI. Scope expanded to broader clinical research and real‑world evidence generation.
 
-### Users
+### Adoption
 
-Due to its unique features of its design at the moment, it quickly gain a worldwide present (estimation of 1.4 billion individuals stored in omop database)  
+OMOP has broad global adoption. Estimates suggest data for roughly 1.4 billion individuals have been mapped to OMOP worldwide.
 
 ![OMOP cartography](./images/omop-cartography.png)
 
-### Features 
+### Key features
 
-The strength of this model it its internation orientation and participation (multi-country terms, multiple hierarchy, ...)  
-Extremely active online community & developed tools (focused on analytics)  
+- International orientation (multi-country, multi-terminology support; hierarchical vocabularies)
+- Very active online community and ecosystem of analytics tools
 
-### Model  
+### Data model
 
-Here is the OMOP data models (mostly relational):  
+The OMOP CDM is primarily relational.
 
-![OMOP Model](./images/omop-model-clean.png)  
+![OMOP Model](./images/omop-model-clean.png)
 
-The multiple hierarchy and country terms are not really a problem.  
-
-For example, terms like 'ICD-10' in english could change in an other language, like 'CIM-10' in French. So these terms are nrmalized into an international norms called 'SNOMED-CT'  
+Terminology differences across languages and sources are handled via standardization. For example, ICD‑10 (English) vs CIM‑10 (French) are mapped to a common standard such as SNOMED CT.
 
 ![OMOP Norms](./images/omop-normalizations.png)
 
-### Links 
+### Useful links
 
-Some links related to OMOP & OHDSI  
+- OHDSI home: https://www.ohdsi.org/
+- OMOP CDM docs: https://ohdsi.github.io/CommonDataModel/
+- ATLAS (analytics tool): http://www.ohdsi.org/web/atlas/
 
-- Home URL : https://www.ohdsi.org/
-- CDM URL : https://ohdsi.github.io/CommonDataModel/  
-- ATLAS (OMOP analytics tool) : http://www.ohdsi.org/web/atlas/
+## Deep dive: OMOP CDM
 
-## Deep dive into OMOP data model
+DDL scripts to create the model are available here: [OHDSI/CommonDataModel](https://github.com/OHDSI/CommonDataModel). These SQL scripts create the standard tables of the OMOP CDM.
 
-We can found DDLs togenerate the model here : [OHDSI-CDM Github](https://github.com/OHDSI/CommonDataModel)  
-They are Definitions and DDLs for the OMOP Common Data Model (CDM)  
-
-DDL are multiple SQL lines which can build the standard tables of OMOP model.  
-
-### OMOP Model & defs
+### OMOP model and conventions
 
 ![OMOP V5.0](./images/omop-model-clean.png)
 
-- Blue part focus on store clinical datas  
-- Green parts are focusing on storing class datas  
-- Orange part focus on therminologies  
+- Blue: clinical data tables
+- Green: classification/metadata tables
+- Orange: vocabularies/terminologies
 
-### Conceptual view  
+### Conceptual view
 
-There is 2 side of the OMOP Model.  
-The 'source' and 'standard' ones.  
+OMOP distinguishes two sides: source and standard.
 
-**Source** : We put anything into this side of the model  
-- Any field that begins with 'source' like 'source_value', 'source_concept_id'
-- Used to keep original data values before standardization 
-- Can be usedfor local queries usinglocal terms  
+**Source**
+- Fields prefixed with `source_` (e.g., `source_value`, `source_concept_id`)
+- Preserve original data values before standardization
+- Useful for local queries that rely on local terms
 
-**Standard** : Need to follow the standards set by OHDSI community  
-- Any field that begins with 'concept'  
-- All OHDSI tools & international queries use only this part of the model  
+**Standard**
+- Fields that reference OMOP concepts (e.g., `concept_id`)
+- Used by OHDSI tools and for cross‑site, standardized analytics
 
 ### Mapping
 
-All source terms must be mapped to standard terms.  
-The power of using mapping is that multi source can map their terms into one, single common standard term understood by the community.  
+All source terms should be mapped to standard concepts. This allows multiple data sources to converge on a shared, community‑understood vocabulary.
 
 ![OMOP mapping](./images/omop-mapping.png)
 
-
-
-![Hierarchy](./images/omop-disease-hierarchy.png) 
+![Hierarchy](./images/omop-disease-hierarchy.png)
 ![Terminologies](./images/omop-concept-hierarchy.png)
 
-All terms of these models, are normalisation for all existent diseases.
+### Medical hierarchies
 
-### Medical hierarchies  
+Hierarchical terminologies enable powerful roll‑ups and drill‑downs.
 
-The power of medical terminologies hierarchy is shown here.  
+![Medical hierarchy](./images/medical-terminologies-hierarchy.png)
 
-![Medical hierarchy](./images/medical-terminologies-hierarchy.png)  
+Example hierarchies:
+- Indication: groups medications by the condition they treat
+- Drug class: groups medications by mechanism of action
 
-The exemple got 2 differents hierarchy.
-- Indication : combine multiple medications by a common indication
-- Drug class : combine multiple medications by a common mechanism of action  
+### Medication terminology
 
-### Worldwide terminology  
+For medications, OMOP uses RxNorm as the primary standard, provided by the U.S. National Library of Medicine.
 
-The standard medication terminology used by OMOP is called RxNorm.  
-It is an open-source terminology provided by the National Library of Medicine of USA.  
+![RxNorm](./images/rxnorm-terminologies.png)
 
-![RxNorm](./images/rxnorm-terminologies.png)  
+OMOP also includes additional medication hierarchies. One example is NDF-RT (National Drug File – Reference Terminology), which organizes medications by related diseases/indications.
 
-OMOP contain a large amount of medication hierarchy  
-For our example we will use the NDFRT one on our queries  
+### Why standardize with OMOP?
 
-NFDRT : National Drug File Reference Terminology  
+- Maintains mappings from non‑standard to standard concepts (e.g., ICD‑10‑CM → SNOMED CT)
+- Classification concepts “fill in” relationships to underlying concepts; new concepts are automatically included in relevant classes
+- Supports multiple hierarchies for flexible analytics
 
-It is an open-source drug terminlogy that provide multiple medication hierarchies  
-In OMOP, it organize medication related to diseases they are used to treat.  
+### Summary
 
-### Benefit to use OMOP standard  
+- `SOURCE_VALUE`: original, unmodified values (useful for debugging; zero loss)
+- `CONCEPT_ID`: standardized OMOP concept identifiers (enables local ↔ network harmonization)
+- Hierarchies: standardized roll‑ups for consistent, cross‑site queries
 
-OMOP maintains mappings from non-standard to standard concepts  
-Eg: ICD10-CM to SNOMED-CT  
-
-OMOP use a classification concept, OMOP "fills in" the underlying concepts
-New concepts added : classification automaticly included  
-More than one hierarchy allowed
-
-### Resuming  
-
-SOURCE_VALUE : stores original values  
-- useful for debugging, zero loss
-CONCEPT_IDs : stores OMOP defined standard value  
-- Harmonization local<->network  
-Hierarchies : OMOP defined standard values  
-- Allows standardized queries 
