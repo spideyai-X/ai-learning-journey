@@ -32,6 +32,8 @@ OMOP = Observational Medical Outcomes Partnership.
 
 It is governed by the OHDSI community (Observational Health Data Sciences and Informatics) at Columbia University, New York.
 
+![OHDSI logo](./images/ohdsi-logo.png)
+
 ### History
 
 • 2008: initiated by the U.S. Food and Drug Administration (FDA) for drug safety surveillance and adverse event detection.
@@ -64,6 +66,7 @@ Terminology differences across languages and sources are handled via standardiza
 - OHDSI home: https://www.ohdsi.org/
 - OMOP CDM docs: https://ohdsi.github.io/CommonDataModel/
 - ATLAS (analytics tool): http://www.ohdsi.org/web/atlas/
+- OMOP Vocabulary v5.0 (GitHub): https://github.com/OHDSI/Vocabulary-v5.0 — vocabulary release artifacts and versioning (use Athena to search/download content).
 
 ## Deep dive: OMOP CDM
 
@@ -95,6 +98,8 @@ OMOP distinguishes two sides: source and standard.
 All source terms should be mapped to standard concepts. This allows multiple data sources to converge on a shared, community‑understood vocabulary.
 
 ![OMOP mapping](./images/omop-mapping.png)
+
+You can search and download OMOP standardized vocabularies and mappings in Athena (official OHDSI vocabulary portal): https://athena.ohdsi.org/search-terms/start
 
 ![Hierarchy](./images/omop-disease-hierarchy.png)
 ![Terminologies](./images/omop-concept-hierarchy.png)
@@ -129,3 +134,21 @@ OMOP also includes additional medication hierarchies. One example is NDF-RT (Nat
 - `CONCEPT_ID`: standardized OMOP concept identifiers (enables local ↔ network harmonization)
 - Hierarchies: standardized roll‑ups for consistent, cross‑site queries
 
+### Querying the OMOP
+
+Key concepts:
+- `SOURCE_VALUE` / `SOURCE_CONCEPT_ID`: original source values (e.g., from MIMIC‑III). These preserve what was in the upstream system.
+- `CONCEPT_ID`: standardized OMOP concept identifiers. Use these for standardized, cross‑site queries.
+- `CONCEPT` table: the vocabulary dictionary that maps `concept_id` ↔ human‑readable names and related metadata.
+
+- `CONCEPT_ANCESTOR` table: stores concept hierarchies, linking a higher‑level (parent/ancestor) concept to all of its descendant concepts for roll‑up queries.
+
+OMOP uses broad, standardized table and field names so it can generalize across many health systems worldwide. A few examples:
+
+- `VISIT_OCCURRENCE` = encounters/admissions/visits
+- `CONDITION_OCCURRENCE` = diagnoses/conditions (table spec: https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence)
+- `DRUG_EXPOSURE` = medication prescribing/dispensing/administration (depending on the source)
+
+These umbrella names intentionally cover many similar events (e.g., external consults, urgent care, inpatient stays) under a single “visit” construct. The same idea applies to other domains.
+
+Using hierarchies can drastically simplify queries: instead of listing hundreds or thousands of specific concepts, you can select a single ancestor `concept_id` and include all of its descendants via `CONCEPT_ANCESTOR`.

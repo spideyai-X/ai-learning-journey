@@ -53,6 +53,7 @@
 		<p>OMOP is the CDM I focus on here because I work with it regularly. It has an active community and solid documentation.</p>
 		<p><strong>OMOP</strong> = Observational Medical Outcomes Partnership.</p>
 		<p>It is governed by the OHDSI community (Observational Health Data Sciences and Informatics) at Columbia University, New York.</p>
+        <p><img src="./images/ohdsi-logo.png" alt="OHDSI logo" style="max-width:220px"></p>
 
 		<h3>History</h3>
 		<ul>
@@ -72,15 +73,16 @@
 
 		<h3>Data model</h3>
 		<p>The OMOP CDM is primarily relational.</p>
-		<img src="./images/omop-model-clean.png" alt="OMOP model">
 		<p>Terminology differences across languages and sources are handled via standardization. For example, ICD‑10 (English) vs CIM‑10 (French) are mapped to a common standard such as SNOMED CT.</p>
-		<img src="./images/omop-normalizations.png" alt="OMOP normalizations">
+		<img src="./images/omop-concept-hierarchy.png" alt="OMOP concept hierarchy">
+
 
 		<h3>Useful links</h3>
 		<ul>
 			<li>OHDSI home: <a href="https://www.ohdsi.org/" target="_blank" rel="noopener noreferrer">https://www.ohdsi.org/</a></li>
 			<li>OMOP CDM docs: <a href="https://ohdsi.github.io/CommonDataModel/" target="_blank" rel="noopener noreferrer">https://ohdsi.github.io/CommonDataModel/</a></li>
 			<li>ATLAS (analytics tool): <a href="http://www.ohdsi.org/web/atlas/" target="_blank" rel="noopener noreferrer">http://www.ohdsi.org/web/atlas/</a></li>
+			<li>OMOP Vocabulary v5.0 (GitHub): <a href="https://github.com/OHDSI/Vocabulary-v5.0" target="_blank" rel="noopener noreferrer">https://github.com/OHDSI/Vocabulary-v5.0</a> — vocabulary release artifacts and versioning (use Athena to search/download content).</li>
 		</ul>
 
 		<h2>Deep dive: OMOP CDM</h2>
@@ -111,8 +113,10 @@
 		<h3>Mapping</h3>
 		<p>All source terms should be mapped to standard concepts. This allows multiple data sources to converge on a shared, community‑understood vocabulary.</p>
 		<img src="./images/omop-mapping.png" alt="OMOP mapping">
+		<p>You can search and download standardized vocabularies and mappings in Athena (official OHDSI vocabulary portal):
+			<a href="https://athena.ohdsi.org/search-terms/start" target="_blank" rel="noopener noreferrer">https://athena.ohdsi.org/search-terms/start</a>
+		</p>
 		<img src="./images/omop-disease-hierarchy.png" alt="OMOP disease hierarchy">
-		<img src="./images/omop-concept-hierarchy.png" alt="OMOP concept hierarchy">
 
 		<h3>Medical hierarchies</h3>
 		<p>Hierarchical terminologies enable powerful roll‑ups and drill‑downs.</p>
@@ -141,6 +145,30 @@
 			<li><code>CONCEPT_ID</code>: standardized OMOP concept identifiers (enables local ↔ network harmonization)</li>
 			<li>Hierarchies: standardized roll‑ups for consistent, cross‑site queries</li>
 		</ul>
+
+		<h2>Querying the OMOP</h2>
+		<p><strong>Key concepts</strong>:</p>
+		<ul>
+			<li><code>SOURCE_VALUE</code> / <code>SOURCE_CONCEPT_ID</code>: original source values (e.g., from MIMIC‑III). These preserve what was in the upstream system.</li>
+			<li><code>CONCEPT_ID</code>: standardized OMOP concept identifiers. Use these for standardized, cross‑site queries.</li>
+			<li><code>CONCEPT</code> table: the vocabulary dictionary that maps <code>concept_id</code> ↔ human‑readable names and related metadata.</li>
+		</ul>
+		<img src="./images/omop-concept-ids-names.png" alt="Concept IDs and names mapping">
+		<ul>
+			<li><code>CONCEPT_ANCESTOR</code> table: stores concept hierarchies, linking a higher‑level (parent/ancestor) concept to all of its descendant concepts for roll‑up queries.</li>
+		</ul>
+		<p>Example hierarchy:</p>
+		<img src="./images/omop-parent-children-ancestor-hierarchy.png" alt="OMOP parent-children ancestor hierarchy">
+
+		<p>OMOP uses broad, standardized table and field names so it can generalize across many health systems worldwide. A few examples:</p>
+		<ul>
+			<li><code>VISIT_OCCURRENCE</code> = encounters/admissions/visits</li>
+			<li><code>CONDITION_OCCURRENCE</code> = diagnoses/conditions (table spec: <a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence" target="_blank" rel="noopener noreferrer">CDM 5.4 CONDITION_OCCURRENCE</a>)</li>
+			<li><code>DRUG_EXPOSURE</code> = medication prescribing/dispensing/administration (depending on the source)</li>
+		</ul>
+		<p>These umbrella names intentionally cover many similar events (e.g., external consults, urgent care, inpatient stays) under a single “visit” construct. The same idea applies to other domains.</p>
+
+		<p>Using hierarchies can drastically simplify queries: instead of listing hundreds or thousands of specific concepts, you can select a single ancestor <code>concept_id</code> and include all of its descendants via <code>CONCEPT_ANCESTOR</code>.</p>
 	</div>
 </body>
 </html>
