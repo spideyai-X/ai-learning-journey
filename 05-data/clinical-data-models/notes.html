@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Clinical Data Models - Notes</title>
+	<title>Modèles de données cliniques - Notes</title>
 
 	<link rel="stylesheet" href="../../styles/main.css">
 	<style>
@@ -28,56 +28,56 @@
 </head>
 <body>
 	<div class="container">
-		<h2>Personalized medicine</h2>
-		<p>Personalized medicine divides patients into increasingly fine categories—clinical phenotypes—to enable tailored diagnosis and treatment.</p>
-		<img src="./images/finer-types.png" alt="Finer clinical phenotypes">
+	<h2>Médecine personnalisée</h2>
+	<p>La médecine personnalisée segmente les patients en catégories de plus en plus fines — des phénotypes cliniques — pour adapter diagnostic et traitement.</p>
+	<img src="./images/finer-types.png" alt="Phénotypes cliniques plus fins">
 
-		<h2>Common Data Models (CDMs)</h2>
-		<p>Common Data Models standardize healthcare data so multiple institutions can combine and analyze it for research on specific diseases, treatments, outcomes, and more.</p>
-		<img src="./images/common-data-models.png" alt="Common data models overview">
-		<p>Healthcare systems store and label data differently. The same concept can be named in different ways even within a single organization, and certainly across countries. Without standardization, queries are inconsistent and data integration is hard.</p>
-		<img src="./images/diff-orga-terms.png" alt="Different terms across organizations">
-		<p>CDMs define common structures and fields so the same kinds of data live in the same place, regardless of source system.</p>
-		<img src="./images/common-data-models-details.png" alt="CDM details">
+	<h2>Modèles de données communs (CDM)</h2>
+	<p>Les CDM standardisent les données de santé pour que plusieurs institutions puissent les combiner et les analyser (maladies, traitements, résultats, etc.).</p>
+	<img src="./images/common-data-models.png" alt="Aperçu des modèles de données communs">
+	<p>Les systèmes de santé stockent et nomment les données différemment. Un même concept peut avoir des noms variés au sein d’une organisation et, a fortiori, entre pays. Sans standardisation, les requêtes sont incohérentes et l’intégration difficile.</p>
+	<img src="./images/diff-orga-terms.png" alt="Termes différents selon les organisations">
+	<p>Les CDM définissent des structures et des champs communs pour que les mêmes données se trouvent au même endroit, quel que soit le système source.</p>
+	<img src="./images/common-data-models-details.png" alt="Détails du CDM">
 
-		<p>Widely used open-source research CDMs include:</p>
+	<p>CDM open‑source largement utilisés en recherche :</p>
 		<ul>
 			<li>i2b2 (Harvard University)</li>
-			<li>OMOP (by the OHDSI Consortium)</li>
+		<li>OMOP (OHDSI Consortium)</li>
 			<li>Sentinel (U.S. FDA)</li>
 			<li>PCORnet (Patient-Centered Outcomes Research Institute)</li>
 		</ul>
-		<p>There is no single “best” CDM—each has strengths and trade-offs depending on your use case, data shape, and query patterns.</p>
+	<p>Il n’existe pas de « meilleur » CDM unique : chacun a ses atouts et limites selon l’usage, la forme des données et les requêtes.</p>
 
 		<h2>OMOP</h2>
-		<p>OMOP is the CDM I focus on here because I work with it regularly. It has an active community and solid documentation.</p>
+	<p>OMOP est le CDM présenté ici car je l’utilise régulièrement. La communauté est active et la documentation solide.</p>
 		<p><strong>OMOP</strong> = Observational Medical Outcomes Partnership.</p>
-		<p>It is governed by the OHDSI community (Observational Health Data Sciences and Informatics) at Columbia University, New York.</p>
+	<p>Il est gouverné par la communauté OHDSI (Observational Health Data Sciences and Informatics) à l’université Columbia, New York.</p>
         <p><img src="./images/ohdsi-logo.png" alt="OHDSI logo" style="max-width:220px"></p>
 
-		<h3>History</h3>
+	<h3>Historique</h3>
 		<ul>
-			<li><strong>2008</strong>: initiated by the U.S. Food and Drug Administration (FDA) for drug safety surveillance and adverse event detection.</li>
-			<li><strong>2014</strong>: transitioned to OHDSI. Scope expanded to broader clinical research and real‑world evidence generation.</li>
+			<li><strong>2008</strong> : initié par la FDA (États‑Unis) pour la pharmacovigilance et la détection d’événements indésirables.</li>
+			<li><strong>2014</strong> : transfert à OHDSI. Extension à la recherche clinique et à l’évidence en vie réelle.</li>
 		</ul>
 
 		<h3>Adoption</h3>
-		<p>OMOP has broad global adoption. Estimates suggest data for roughly 1.4 billion individuals have been mapped to OMOP worldwide.</p>
+	<p>OMOP est largement adopté dans le monde ; on estime qu’environ 1,4 milliard d’individus ont des données mappées en OMOP.</p>
 		<img src="./images/omop-cartography.png" alt="OMOP worldwide adoption">
 
-		<h3>Key features</h3>
+	<h3>Points clés</h3>
 		<ul>
-			<li>International orientation (multi-country, multi-terminology support; hierarchical vocabularies)</li>
-			<li>Very active online community and ecosystem of analytics tools</li>
+			<li>Orientation internationale (multi‑pays, multi‑terminologies ; vocabulaires hiérarchiques)</li>
+			<li>Communauté très active et écosystème riche d’outils analytiques</li>
 		</ul>
 
-		<h3>Data model</h3>
-		<p>The OMOP CDM is primarily relational.</p>
-		<p>Terminology differences across languages and sources are handled via standardization. For example, ICD‑10 (English) vs CIM‑10 (French) are mapped to a common standard such as SNOMED CT.</p>
-		<img src="./images/omop-concept-hierarchy.png" alt="OMOP concept hierarchy">
+	<h3>Modèle de données</h3>
+	<p>Le CDM OMOP est principalement relationnel.</p>
+	<p>Les différences de terminologie entre langues et sources sont gérées via la standardisation. Par exemple, ICD‑10 (anglais) vs CIM‑10 (français) sont mappés vers un standard commun tel que SNOMED CT.</p>
+	<img src="./images/omop-concept-hierarchy.png" alt="Hiérarchie des concepts OMOP">
 
 
-		<h3>Useful links</h3>
+	<h3>Liens utiles</h3>
 		<ul>
 			<li>OHDSI home: <a href="https://www.ohdsi.org/" target="_blank" rel="noopener noreferrer">https://www.ohdsi.org/</a></li>
 			<li>OMOP CDM docs: <a href="https://ohdsi.github.io/CommonDataModel/" target="_blank" rel="noopener noreferrer">https://ohdsi.github.io/CommonDataModel/</a></li>
@@ -85,90 +85,90 @@
 			<li>OMOP Vocabulary v5.0 (GitHub): <a href="https://github.com/OHDSI/Vocabulary-v5.0" target="_blank" rel="noopener noreferrer">https://github.com/OHDSI/Vocabulary-v5.0</a> — vocabulary release artifacts and versioning (use Athena to search/download content).</li>
 		</ul>
 
-		<h2>Deep dive: OMOP CDM</h2>
-		<p>DDL scripts to create the model are available here: <a href="https://github.com/OHDSI/CommonDataModel" target="_blank" rel="noopener noreferrer">OHDSI/CommonDataModel</a>. These SQL scripts create the standard tables of the OMOP CDM.</p>
+	<h2>Approfondissement : OMOP CDM</h2>
+	<p>Les scripts DDL pour créer le modèle sont disponibles ici : <a href="https://github.com/OHDSI/CommonDataModel" target="_blank" rel="noopener noreferrer">OHDSI/CommonDataModel</a>. Ces scripts SQL créent les tables standard du CDM OMOP.</p>
 
-		<h3>OMOP model and conventions</h3>
+	<h3>Modèle OMOP et conventions</h3>
 		<img src="./images/omop-model-clean.png" alt="OMOP v5 model">
 		<ul>
-			<li><span class="legend-blue">Blue</span>: clinical data tables</li>
-			<li><span class="legend-green">Green</span>: classification/metadata tables</li>
-			<li><span class="legend-orange">Orange</span>: vocabularies/terminologies</li>
+			<li><span class="legend-blue">Bleu</span> : tables de données cliniques</li>
+			<li><span class="legend-green">Vert</span> : tables de classification/métadonnées</li>
+			<li><span class="legend-orange">Orange</span> : vocabulaires/terminologies</li>
 		</ul>
 
-		<h3>Conceptual view</h3>
-		<p>OMOP distinguishes two sides: <strong>source</strong> and <strong>standard</strong>.</p>
-		<p><strong>Source</strong></p>
+	<h3>Vue conceptuelle</h3>
+	<p>OMOP distingue deux volets : <strong>source</strong> et <strong>standard</strong>.</p>
+	<p><strong>Source</strong></p>
 		<ul>
-			<li>Fields prefixed with <code>source_</code> (e.g., <code>source_value</code>, <code>source_concept_id</code>)</li>
-			<li>Preserve original data values before standardization</li>
-			<li>Useful for local queries that rely on local terms</li>
+			<li>Champs préfixés <code>source_</code> (ex. <code>source_value</code>, <code>source_concept_id</code>)</li>
+			<li>Conservent les valeurs originales avant standardisation</li>
+			<li>Utile pour des requêtes locales basées sur les termes locaux</li>
 		</ul>
 		<p><strong>Standard</strong></p>
 		<ul>
-			<li>Fields that reference OMOP concepts (e.g., <code>concept_id</code>)</li>
-			<li>Used by OHDSI tools and for cross‑site, standardized analytics</li>
+			<li>Champs référencés aux concepts OMOP (ex. <code>concept_id</code>)</li>
+			<li>Utilisé par les outils OHDSI et pour des analyses standardisées multi‑sites</li>
 		</ul>
 
-		<h3>Mapping</h3>
-		<p>All source terms should be mapped to standard concepts. This allows multiple data sources to converge on a shared, community‑understood vocabulary.</p>
-		<img src="./images/omop-mapping.png" alt="OMOP mapping">
-		<p>You can search and download standardized vocabularies and mappings in Athena (official OHDSI vocabulary portal):
+		<h3>Cartographie</h3>
+		<p>Tous les termes sources doivent être mappés aux concepts standards. Cela permet à plusieurs sources de converger vers un vocabulaire commun compris par la communauté.</p>
+		<img src="./images/omop-mapping.png" alt="Cartographie OMOP">
+		<p>Vous pouvez rechercher et télécharger les vocabulaires et mappings standardisés via Athena (portail officiel OHDSI) :
 			<a href="https://athena.ohdsi.org/search-terms/start" target="_blank" rel="noopener noreferrer">https://athena.ohdsi.org/search-terms/start</a>
 		</p>
-		<img src="./images/omop-disease-hierarchy.png" alt="OMOP disease hierarchy">
+		<img src="./images/omop-disease-hierarchy.png" alt="Hiérarchie des maladies OMOP">
 
-		<h3>Medical hierarchies</h3>
-		<p>Hierarchical terminologies enable powerful roll‑ups and drill‑downs.</p>
-		<img src="./images/medical-terminologies-hierarchy.png" alt="Medical terminologies hierarchy">
-		<p>Example hierarchies:</p>
+	<h3>Hiérarchies médicales</h3>
+	<p>Les terminologies hiérarchiques permettent des agrégations et des explorations puissantes.</p>
+	<img src="./images/medical-terminologies-hierarchy.png" alt="Hiérarchie des terminologies médicales">
+	<p>Exemples :</p>
 		<ul>
-			<li><strong>Indication</strong>: groups medications by the condition they treat</li>
-			<li><strong>Drug class</strong>: groups medications by mechanism of action</li>
+			<li><strong>Indication</strong> : regroupe les médicaments par pathologie traitée</li>
+			<li><strong>Classe thérapeutique</strong> : regroupe par mécanisme d’action</li>
 		</ul>
 
-		<h3>Medication terminology</h3>
-		<p>For medications, OMOP uses RxNorm as the primary standard, provided by the U.S. National Library of Medicine.</p>
-		<img src="./images/rxnorm-terminologies.png" alt="RxNorm and related terminologies">
-		<p>OMOP also includes additional medication hierarchies. One example is NDF‑RT (National Drug File – Reference Terminology), which organizes medications by related diseases/indications.</p>
+	<h3>Terminologie des médicaments</h3>
+	<p>Pour les médicaments, OMOP utilise RxNorm comme standard principal (National Library of Medicine, USA).</p>
+	<img src="./images/rxnorm-terminologies.png" alt="RxNorm et terminologies associées">
+	<p>OMOP propose aussi d’autres hiérarchies, comme NDF‑RT (National Drug File – Reference Terminology), qui organise par maladies/indications.</p>
 
-		<h3>Why standardize with OMOP?</h3>
+	<h3>Pourquoi standardiser avec OMOP ?</h3>
 		<ul>
-			<li>Maintains mappings from non‑standard to standard concepts (e.g., ICD‑10‑CM → SNOMED CT)</li>
-			<li>Classification concepts “fill in” relationships to underlying concepts; new concepts are automatically included in relevant classes</li>
-			<li>Supports multiple hierarchies for flexible analytics</li>
+			<li>Maintient les mappings des concepts non standards vers les standards (ex. ICD‑10‑CM → SNOMED CT)</li>
+			<li>Les concepts de classification relient les concepts sous‑jacents ; les nouveaux concepts sont inclus automatiquement</li>
+			<li>Plusieurs hiérarchies pour des analyses flexibles</li>
 		</ul>
 
-		<h3>Summary</h3>
+	<h3>Résumé</h3>
 		<ul>
-			<li><code>SOURCE_VALUE</code>: original, unmodified values (useful for debugging; zero loss)</li>
-			<li><code>CONCEPT_ID</code>: standardized OMOP concept identifiers (enables local ↔ network harmonization)</li>
-			<li>Hierarchies: standardized roll‑ups for consistent, cross‑site queries</li>
+			<li><code>SOURCE_VALUE</code> : valeurs originales non modifiées (utile pour le debug ; zéro perte)</li>
+			<li><code>CONCEPT_ID</code> : identifiants de concepts OMOP standardisés (harmonisation local ↔ réseau)</li>
+			<li>Hiérarchies : agrégations standardisées pour des requêtes cohérentes multi‑sites</li>
 		</ul>
 
-		<h2>Querying the OMOP</h2>
-		<p><strong>Key concepts</strong>:</p>
+	<h2>Interroger OMOP</h2>
+	<p><strong>Concepts clés</strong> :</p>
 		<ul>
-			<li><code>SOURCE_VALUE</code> / <code>SOURCE_CONCEPT_ID</code>: original source values (e.g., from MIMIC‑III). These preserve what was in the upstream system.</li>
-			<li><code>CONCEPT_ID</code>: standardized OMOP concept identifiers. Use these for standardized, cross‑site queries.</li>
-			<li><code>CONCEPT</code> table: the vocabulary dictionary that maps <code>concept_id</code> ↔ human‑readable names and related metadata.</li>
+			<li><code>SOURCE_VALUE</code> / <code>SOURCE_CONCEPT_ID</code> : valeurs sources originales (ex. MIMIC‑III), fidèles au système amont.</li>
+			<li><code>CONCEPT_ID</code> : identifiants de concepts OMOP standardisés, pour des requêtes multi‑sites.</li>
+			<li>Table <code>CONCEPT</code> : dictionnaire des vocabulaires liant <code>concept_id</code> ↔ libellés et métadonnées.</li>
 		</ul>
-		<img src="./images/omop-concept-ids-names.png" alt="Concept IDs and names mapping">
+	<img src="./images/omop-concept-ids-names.png" alt="Correspondance des IDs de concepts et des libellés">
 		<ul>
-			<li><code>CONCEPT_ANCESTOR</code> table: stores concept hierarchies, linking a higher‑level (parent/ancestor) concept to all of its descendant concepts for roll‑up queries.</li>
+			<li>Table <code>CONCEPT_ANCESTOR</code> : hiérarchies reliant un concept parent/ancêtre à tous ses descendants pour l’agrégation.</li>
 		</ul>
-		<p>Example hierarchy:</p>
-		<img src="./images/omop-parent-children-ancestor-hierarchy.png" alt="OMOP parent-children ancestor hierarchy">
+	<p>Exemple de hiérarchie :</p>
+	<img src="./images/omop-parent-children-ancestor-hierarchy.png" alt="Hiérarchie parent‑enfants OMOP">
 
-		<p>OMOP uses broad, standardized table and field names so it can generalize across many health systems worldwide. A few examples:</p>
+	<p>OMOP utilise des noms de tables et de champs larges et standardisés afin de généraliser à de nombreux systèmes de santé. Exemples :</p>
 		<ul>
-			<li><code>VISIT_OCCURRENCE</code> = encounters/admissions/visits (table spec: <a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#visit_occurrence" target="_blank" rel="noopener noreferrer">CDM 5.4 VISIT_OCCURRENCE</a>)</li>
-			<li><code>CONDITION_OCCURRENCE</code> = diagnoses/conditions (table spec: <a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence" target="_blank" rel="noopener noreferrer">CDM 5.4 CONDITION_OCCURRENCE</a>)</li>
-			<li><code>DRUG_EXPOSURE</code> = medication prescribing/dispensing/administration (depending on the source) (table spec: <a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#drug_exposure" target="_blank" rel="noopener noreferrer">CDM 5.4 DRUG_EXPOSURE</a>)</li>
+			<li><code>VISIT_OCCURRENCE</code> = consultations/admissions/visites (spécification : <a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#visit_occurrence" target="_blank" rel="noopener noreferrer">CDM 5.4 VISIT_OCCURRENCE</a>)</li>
+			<li><code>CONDITION_OCCURRENCE</code> = diagnostics/affections (spécification : <a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence" target="_blank" rel="noopener noreferrer">CDM 5.4 CONDITION_OCCURRENCE</a>)</li>
+			<li><code>DRUG_EXPOSURE</code> = prescription/délivrance/administration de médicaments (selon la source) (spécification : <a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#drug_exposure" target="_blank" rel="noopener noreferrer">CDM 5.4 DRUG_EXPOSURE</a>)</li>
 		</ul>
-		<p>These umbrella names intentionally cover many similar events (e.g., external consults, urgent care, inpatient stays) under a single “visit” construct. The same idea applies to other domains.</p>
+	<p>Ces noms « parapluie » couvrent volontairement des événements proches (ex. consultation externe, urgences, hospitalisation) sous une même notion de « visite ». Même logique pour les autres domaines.</p>
 
-		<p>Using hierarchies can drastically simplify queries: instead of listing hundreds or thousands of specific concepts, you can select a single ancestor <code>concept_id</code> and include all of its descendants via <code>CONCEPT_ANCESTOR</code>.</p>
+	<p>L’usage des hiérarchies simplifie fortement les requêtes : au lieu d’énumérer des centaines de concepts, sélectionnez un <code>concept_id</code> ancêtre et incluez tous ses descendants via <code>CONCEPT_ANCESTOR</code>.</p>
 	</div>
 </body>
 </html>
